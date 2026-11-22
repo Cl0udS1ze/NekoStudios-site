@@ -3,6 +3,7 @@
   'use strict';
 
   var auth = window.NekoAuth;
+  var api = window.NekoApi;
   var ui = window.NekoUI;
   var page = document.body && document.body.getAttribute('data-auth-page');
   if (!auth || !page) return;
@@ -15,8 +16,22 @@
     try {
       var value = decodeURIComponent(match[1]);
       if (value.indexOf('/') === 0 && value.indexOf('//') !== 0) return value;
+      if (value.indexOf('crazysurfer://auth') === 0) return value;
     } catch (e) {}
     return 'profile.html';
+  }
+  function finishAuth() {
+    var next = nextUrl();
+    if (next.indexOf('crazysurfer://') === 0 && api) {
+      api.request('/api/auth/mobile-code', { method: 'POST', credentials: true })
+        .then(function (j) {
+          window.location.href = next + (next.indexOf('?') === -1 ? '?' : '&') +
+            'code=' + encodeURIComponent(j.code || '');
+        })
+        .catch(function () { window.location.href = 'profile.html'; });
+      return;
+    }
+    window.location.href = next;
   }
 
   function setLoading(id, loading, label) {
@@ -42,7 +57,7 @@
       };
       auth.register(values)
         .then(function () { return auth.login({ username: values.username, password: values.password }); })
-        .then(function () { window.location.href = nextUrl(); })
+        .then(function () { finishAuth(); })
         .catch(function (e) { showError(e && e.message ? e.message : 'Registration failed.'); })
         .then(function () { setLoading('reg-submit', false, 'Create account'); });
     });
@@ -57,7 +72,7 @@
         password: document.getElementById('login-password').value
       };
       auth.login(values)
-        .then(function () { window.location.href = nextUrl(); })
+        .then(function () { finishAuth(); })
         .catch(function (e) { showError(e && e.message ? e.message : 'Login failed.'); })
         .then(function () { setLoading('login-submit', false, 'Log in'); });
     });
