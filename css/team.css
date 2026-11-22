@@ -1,0 +1,29 @@
+/* Team roster cards. */
+.team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-3); }
+.team-card {
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  transition: border-color .2s var(--ease), transform .2s var(--ease);
+}
+.team-card:hover { transform: translateY(-3px); border-color: rgba(167,139,250,.45); }
+.team-avatar {
+  display: grid; place-items: center;
+  width: 54px; height: 54px;
+  border: 1px solid rgba(196,181,253,.4);
+  border-radius: 14px;
+  background: var(--accent-dim);
+  color: var(--violet);
+  font-size: 1.2rem; font-weight: 800;
+}
+.team-name { margin-top: var(--space-3); font-size: 1.15rem; }
+.team-username { color: var(--muted); font-size: .84rem; }
+.team-role {
+  display: inline-block; margin-top: var(--space-2);
+  padding: 4px 10px; border-radius: 999px;
+  background: var(--accent-dim); color: var(--violet);
+  font-size: .72rem; font-weight: 700; letter-spacing: .06em;
+}
+.team-bio { margin-top: var(--space-3); color: var(--text-soft); font-size: .92rem; }
+.team-link { display: inline-block; margin-top: var(--space-3); color: var(--violet); font-size: .85rem; }

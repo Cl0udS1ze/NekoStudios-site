@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Projects by NekoStudios — games, software and experimental technology.">
+<meta name="theme-color" content="#07090f">
+<title>Projects — NekoStudios</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/projects.css">
+<script src="js/site.js" defer></script>
+<script src="js/config.js" defer></script>
+<script src="js/api.js" defer></script>
+<script src="js/site-settings.js" defer></script>
+<script src="js/auth.js" defer></script>
+<script src="js/data.js" defer></script>
+<script src="js/news-data.js" defer></script>
+<script src="js/ui.js" defer></script>
+<script src="js/i18n.js" defer></script>
+<script src="js/repository.js" defer></script>
+<script src="js/components.js" defer></script>
+<script src="js/news-components.js" defer></script>
+<script src="js/projects.js" defer></script>
+</head>
+<body data-page="projects">
+<a class="skip-link" href="#content">Skip to content</a>
+
+<div data-site-header data-active="projects" data-base="index.html"></div>
+
+<main id="content">
+  <section class="page-hero" aria-labelledby="projects-page-title">
+    <div class="container">
+      <p class="eyebrow">Catalog</p>
+      <h1 id="projects-page-title">Our Projects</h1>
+      <p class="page-subtitle">Games, software and experimental technology — built from ideas and developed with imagination.</p>
+      <p class="page-support">Explore the worlds, tools and systems currently being created at NekoStudios.</p>
+    </div>
+  </section>
+
+  <section class="section catalog" id="catalog" aria-label="Project catalog">
+    <div class="container">
+      <div class="catalog-toolbar">
+        <div class="filter-bar" id="project-filters" role="group" aria-label="Filter projects">
+          <button type="button" class="filter-btn is-active" data-filter="all" aria-pressed="true">All Projects</button>
+          <button type="button" class="filter-btn" data-filter="games" aria-pressed="false">Games</button>
+          <button type="button" class="filter-btn" data-filter="software" aria-pressed="false">Software</button>
+          <button type="button" class="filter-btn" data-filter="ai-research" aria-pressed="false">AI &amp; Research</button>
+        </div>
+        <label class="search-field">
+          <span class="sr-only">Search projects</span>
+          <input id="project-search" type="search" placeholder="Search projects" autocomplete="off">
+        </label>
+      </div>
+
+      <div class="project-grid" id="project-grid"></div>
+      <div class="empty-state" id="catalog-empty" hidden></div>
+      <noscript><p class="notice">Enable JavaScript to view the project catalog.</p></noscript>
+    </div>
+  </section>
+</main>
+
+<div data-site-footer data-active="projects" data-base="index.html"></div>
+</body>
+</html>

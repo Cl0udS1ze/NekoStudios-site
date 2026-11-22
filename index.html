@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="NekoStudios — independent game and software studio. We create games, software and experimental AI systems. Small studio. Big worlds.">
+<meta name="theme-color" content="#07090f">
+<title>NekoStudios — Small studio. Big worlds.</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/news.css">
+<script src="js/site.js" defer></script>
+<script src="js/config.js" defer></script>
+<script src="js/api.js" defer></script>
+<script src="js/site-settings.js" defer></script>
+<script src="js/auth.js" defer></script>
+<script src="js/data.js" defer></script>
+<script src="js/news-data.js" defer></script>
+<script src="js/ui.js" defer></script>
+<script src="js/i18n.js" defer></script>
+<script src="js/repository.js" defer></script>
+<script src="js/components.js" defer></script>
+<script src="js/news-components.js" defer></script>
+<script src="js/main.js" defer></script>
+</head>
+<body data-page="home">
+<a class="skip-link" href="#content">Skip to content</a>
+
+<div data-site-header data-active="home"></div>
+
+<main id="content">
+  <section class="hero" id="home" aria-labelledby="hero-title">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">Independent Game &amp; Software Studio</p>
+        <h1 id="hero-title">NekoStudios</h1>
+        <p class="hero-lead">We build interactive worlds, useful digital tools and experimental AI systems.</p>
+        <p class="hero-slogan" data-setting-key="site_slogan">Small studio. Big worlds.</p>
+        <div class="hero-actions">
+          <a class="btn btn--primary" href="#projects">Explore our projects</a>
+          <a class="btn btn--ghost" href="#about">About the studio</a>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="orbit orbit--outer"></div>
+        <div class="orbit orbit--inner"></div>
+        <div class="world-core"><span></span><span></span><span></span><span></span></div>
+        <div class="artifact artifact--one"></div>
+        <div class="artifact artifact--two"></div>
+        <div class="hero-caption"> Ideas&nbsp; → &nbsp;Worlds </div>
+      </div>
+    </div>
+    <div class="container scroll-hint" aria-hidden="true"><span></span> scroll to explore</div>
+  </section>
+
+  <section class="section home-news" id="news" aria-labelledby="home-news-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">From the devlog</p>
+          <h2 id="home-news-title">News &amp; Devlog</h2>
+        </div>
+        <p class="section-intro"><a href="news.html">Все публикации →</a></p>
+      </div>
+      <div class="news-preview" id="home-news-grid"></div>
+    </div>
+  </section>
+
+  <section class="section projects" id="projects" aria-labelledby="projects-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">What we are building</p>
+          <h2 id="projects-title">Featured Projects</h2>
+        </div>
+        <p class="section-intro">Explore the worlds, tools and ideas currently being developed at NekoStudios.</p>
+      </div>
+      <!-- Local filters over the same project data; no backend on this stage. -->
+      <div class="filter-bar" id="project-filters" role="group" aria-label="Filter projects">
+        <button type="button" class="filter-btn is-active" data-filter="all" aria-pressed="true">All Projects</button>
+        <button type="button" class="filter-btn" data-filter="games" aria-pressed="false">Games</button>
+        <button type="button" class="filter-btn" data-filter="software" aria-pressed="false">Software</button>
+        <button type="button" class="filter-btn" data-filter="ai-research" aria-pressed="false">AI &amp; Research</button>
+      </div>
+      <!-- Project cards are rendered from js/data.js so a future API can supply the same shape. -->
+      <div class="project-grid" id="project-grid"></div>
+      <noscript>
+        <p class="notice">Enable JavaScript to view the project list.</p>
+      </noscript>
+    </div>
+  </section>
+
+  <section class="section about" id="about" aria-labelledby="about-title">
+    <div class="container about-inner">
+      <div class="about-aside" aria-hidden="true">
+        <div class="about-symbol"><span></span><span></span><span></span></div>
+        <p class="about-aside-label">Independent by design</p>
+      </div>
+      <div class="about-content">
+        <p class="eyebrow">About the studio</p>
+        <h2 id="about-title">Built from ideas. Driven by imagination.</h2>
+        <div class="about-text">
+          <p>NekoStudios is an independent studio creating games, software and experimental AI systems.</p>
+          <p>We build interactive worlds, develop useful digital tools and explore new ideas through technology.</p>
+          <p>Our software projects include experimental utilities and the AI system NEIRON, which is being built from the ground up and is still in development.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-site-footer></div>
+</body>
+</html>

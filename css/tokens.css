@@ -1,0 +1,43 @@
+/* Design tokens — the single source of colour, spacing and type decisions. */
+:root {
+  color-scheme: dark;
+
+  --bg: #07090f;
+  --bg-deep: #04060b;
+  --surface: #0f141e;
+  --surface-2: #141b28;
+  --surface-hover: #182131;
+  --border: rgba(255, 255, 255, .09);
+  --border-strong: rgba(255, 255, 255, .16);
+
+  --text: #eef3fa;
+  --text-soft: #c4cfde;
+  --muted: #8996a9;
+
+  /* Primary violet palette, with mint kept as a secondary game accent. */
+  --accent: #a78bfa;
+  --accent-dim: rgba(167, 139, 250, .14);
+  --violet: #c4b5fd;
+  --violet-dim: rgba(196, 181, 253, .14);
+  --mint: #7cf7c4;
+  --purple: #8b5cf6;
+  --purple-deep: #4c1d95;
+  --warm: #ffb877;
+
+  --radius: 16px;
+  --radius-sm: 10px;
+  --container: 1160px;
+  --header-h: 76px;
+
+  --space-1: 8px;
+  --space-2: 12px;
+  --space-3: 20px;
+  --space-4: 32px;
+  --space-5: 48px;
+  --space-6: 72px;
+  --space-7: 104px;
+
+  --font: "Inter", "SF Pro Display", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --shadow: 0 24px 60px rgba(0, 0, 0, .45);
+  --ease: cubic-bezier(.2, .7, .2, 1);
+}

@@ -1,0 +1,14 @@
+/* Neko ID settings — reuses auth.css cards and form controls. */
+.settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-3); }
+.settings-card h2 { font-size: 1.3rem; margin-bottom: var(--space-2); }
+.settings-label { display: block; margin-top: var(--space-3); color: var(--text-soft); font-size: .82rem; }
+.settings-label input, .settings-label textarea, .settings-label select {
+  display: block; width: 100%; margin-top: 6px; padding: 10px 12px;
+  border: 1px solid var(--border-strong); border-radius: 8px;
+  background: var(--bg-deep); color: var(--text); font: inherit;
+}
+.settings-label textarea { min-height: 100px; }
+.settings-check { display: flex; align-items: center; gap: 8px; margin-top: var(--space-3); color: var(--text-soft); font-size: .9rem; }
+.settings-value { color: var(--muted); font-size: .9rem; margin-top: 4px; }
+.settings-msg { margin-top: var(--space-3); color: var(--violet); font-size: .9rem; }
+.settings-msg.error { color: #ffb4b4; }

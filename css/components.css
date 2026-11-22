@@ -1,0 +1,332 @@
+/* Reusable UI pieces and CSS-generated artwork. No external images. */
+
+/* Brand */
+.brand { display: inline-flex; align-items: center; gap: 10px; }
+.brand-logo {
+  display: block; flex: none;
+  width: 36px; height: 36px;
+  object-fit: contain;
+  mix-blend-mode: screen;
+  transition: filter .2s var(--ease);
+}
+.brand:hover .brand-logo { filter: brightness(1.18); }
+.brand-name { font-size: 1.12rem; font-weight: 800; letter-spacing: -.04em; }
+.brand-name span { color: var(--accent); }
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 24px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  font-size: .95rem;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  cursor: pointer;
+  transition: transform .2s var(--ease), background .2s var(--ease), border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
+.btn--primary {
+  background: linear-gradient(120deg, var(--violet), #8b5cf6);
+  color: #0d0718;
+  box-shadow: 0 10px 30px rgba(124, 247, 196, .18);
+}
+.btn--primary:hover { box-shadow: 0 14px 36px rgba(124, 247, 196, .28); }
+.btn--ghost { background: rgba(255,255,255,.03); border-color: var(--border-strong); color: var(--text); }
+.btn--ghost:hover { background: rgba(255,255,255,.07); border-color: var(--accent); }
+.btn--small {
+  min-height: 40px;
+  padding: 0 16px;
+  font-size: .85rem;
+  background: var(--accent);
+  color: #0d0718;
+}
+
+/* Hero artwork */
+.hero-art {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-width: 480px;
+  margin-inline: auto;
+  display: grid;
+  place-items: center;
+}
+.orbit {
+  position: absolute;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 50%;
+  animation: spin 28s linear infinite;
+}
+.orbit::after {
+  content: "";
+  position: absolute;
+  top: -4px; left: 50%;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 18px var(--accent);
+}
+.orbit--outer { width: 88%; height: 88%; }
+.orbit--inner { width: 60%; height: 60%; animation-duration: 18s; animation-direction: reverse; border-color: rgba(155,139,255,.22); }
+.orbit--inner::after { background: var(--violet); box-shadow: 0 0 18px var(--violet); }
+
+.world-core {
+  position: relative;
+  width: 46%; height: 46%;
+  transform: rotate(-18deg);
+  border: 1px solid rgba(124,247,196,.35);
+  border-radius: 18px;
+  background: linear-gradient(150deg, rgba(124,247,196,.12), rgba(155,139,255,.10));
+  box-shadow: inset 0 0 40px rgba(0,0,0,.6), 0 30px 70px rgba(0,0,0,.55);
+  animation: float 7s ease-in-out infinite;
+}
+.world-core span {
+  position: absolute;
+  left: 16%; right: 16%;
+  height: 8px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: .7;
+}
+.world-core span:nth-child(1) { top: 22%; }
+.world-core span:nth-child(2) { top: 42%; background: linear-gradient(90deg, transparent, var(--violet), transparent); }
+.world-core span:nth-child(3) { top: 62%; }
+.world-core span:nth-child(4) { top: 82%; background: linear-gradient(90deg, transparent, var(--warm), transparent); opacity: .5; }
+
+.artifact {
+  position: absolute;
+  width: 54px; height: 54px;
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  background: linear-gradient(145deg, rgba(255,255,255,.08), rgba(255,255,255,.01));
+  box-shadow: var(--shadow);
+  animation: float 5s ease-in-out infinite;
+}
+.artifact::before, .artifact::after { content: ""; position: absolute; border-radius: 3px; }
+.artifact--one { top: 12%; right: 8%; animation-delay: -2s; }
+.artifact--one::before { inset: 14px 10px auto; height: 6px; background: var(--accent); }
+.artifact--one::after { inset: 26px 10px auto; height: 6px; background: rgba(255,255,255,.25); }
+.artifact--two { bottom: 14%; left: 6%; animation-delay: -4s; }
+.artifact--two::before { inset: 14px 10px auto; height: 6px; background: var(--violet); }
+.artifact--two::after { inset: 26px 10px auto; height: 6px; background: rgba(255,255,255,.25); }
+.hero-caption {
+  position: absolute;
+  bottom: 2%;
+  color: var(--muted);
+  font-size: .7rem;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+}
+
+/* Local project filters */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: var(--space-4);
+}
+.filter-btn {
+  padding: 9px 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: rgba(255,255,255,.03);
+  color: var(--text-soft);
+  font-size: .85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease);
+}
+.filter-btn:hover { border-color: var(--violet); color: var(--text); }
+.filter-btn.is-active {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+/* Project cards */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+  gap: var(--space-3);
+}
+.project-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  transition: border-color .25s var(--ease), transform .25s var(--ease), box-shadow .25s var(--ease);
+}
+.project-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(167,139,250,.45);
+  box-shadow: var(--shadow);
+}
+.project-art { display: block; position: relative; height: 218px; overflow: hidden; border-bottom: 1px solid var(--border); }
+.project-art::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(7,9,15,.55));
+}
+.project-status {
+  position: absolute;
+  z-index: 2;
+  top: 16px; left: 16px;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: rgba(6, 9, 14, .72);
+  color: var(--text-soft);
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+}
+.project-status::before {
+  content: "";
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--warm);
+  box-shadow: 0 0 10px var(--warm);
+}
+.project-status--experimental::before { background: var(--violet); box-shadow: 0 0 10px var(--violet); }
+.project-status--completed::before { background: var(--purple); box-shadow: 0 0 10px var(--purple); }
+.project-status--released::before { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+.project-status--soon::before { background: var(--warm); }
+.project-status--closed::before { background: var(--muted); box-shadow: none; }
+.project-category {
+  color: var(--violet);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.project-body { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-4); flex: 1; }
+.project-body h3 { font-size: 1.7rem; }
+.project-body p { color: var(--muted); font-size: .98rem; }
+.project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: var(--space-2); }
+.project-tags span {
+  padding: 5px 10px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--text-soft);
+  font-size: .72rem;
+  letter-spacing: .05em;
+}
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: var(--space-2);
+  color: var(--violet);
+  font-size: .88rem;
+  font-weight: 700;
+  transition: gap .2s var(--ease), color .2s var(--ease);
+}
+.project-link:hover { gap: 12px; color: #ffffff; }
+
+/* DEEP MINE artwork — layered strata and a vertical shaft */
+.art--mine {
+  background:
+    radial-gradient(circle at 30% 62%, rgba(255,184,119,.5) 0 3px, transparent 4px),
+    radial-gradient(circle at 68% 40%, rgba(124,247,196,.6) 0 3px, transparent 4px),
+    radial-gradient(circle at 54% 80%, rgba(155,139,255,.55) 0 4px, transparent 5px),
+    radial-gradient(circle at 82% 72%, rgba(255,184,119,.35) 0 2px, transparent 3px),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 2px, transparent 2px 27px),
+    linear-gradient(180deg, #0c111a 0%, #1a1c23 45%, #0a0c12 100%);
+}
+.art--mine::before {
+  content: "";
+  position: absolute;
+  left: 44%; top: 0; bottom: 0;
+  width: 12%;
+  background: linear-gradient(90deg, rgba(124,247,196,.02), rgba(124,247,196,.12), rgba(124,247,196,.02));
+  border-inline: 1px solid rgba(124,247,196,.18);
+  box-shadow: 0 0 50px rgba(124,247,196,.15);
+}
+
+/* AFTER ZERO artwork — ruined skyline under a cold horizon */
+.art--after {
+  background:
+    radial-gradient(70% 55% at 50% 100%, rgba(255,137,94,.28), transparent 70%),
+    linear-gradient(180deg, #0b1020 0%, #161528 55%, #241a1c 100%);
+}
+.art--after::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 58%;
+  background:
+    linear-gradient(90deg, transparent 0 8%, #0a0c12 8% 16%, transparent 16% 21%, #0a0c12 21% 27%, transparent 27% 36%, #0a0c12 36% 43%, transparent 43% 51%, #0a0c12 51% 57%, transparent 57% 66%, #0a0c12 66% 74%, transparent 74% 82%, #0a0c12 82% 88%, transparent 88%);
+  clip-path: polygon(0 100%, 0 46%, 8% 46%, 8% 22%, 16% 22%, 16% 58%, 21% 58%, 21% 36%, 27% 36%, 27% 64%, 36% 64%, 36% 18%, 43% 18%, 43% 50%, 51% 50%, 51% 28%, 57% 28%, 57% 62%, 66% 62%, 66% 34%, 74% 34%, 74% 56%, 82% 56%, 82% 24%, 88% 24%, 88% 48%, 100% 48%, 100% 100%);
+}
+
+/* Neko AI artwork — experimental utility, violet nodes on a grid */
+.art--neko-ai {
+  background:
+    radial-gradient(circle at 24% 32%, rgba(196,181,253,.55) 0 4px, transparent 5px),
+    radial-gradient(circle at 62% 54%, rgba(167,139,250,.6) 0 5px, transparent 6px),
+    radial-gradient(circle at 82% 26%, rgba(196,181,253,.4) 0 3px, transparent 4px),
+    linear-gradient(rgba(196,181,253,.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(196,181,253,.09) 1px, transparent 1px),
+    linear-gradient(160deg, #100d1e, #1a1530 60%, #0b0914);
+  background-size: auto, auto, auto, 24px 24px, 24px 24px, auto;
+}
+.art--neko-ai::before {
+  content: "";
+  position: absolute;
+  left: 18%; top: 34%; width: 64%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--violet), transparent);
+  box-shadow: 0 56px 0 rgba(196,181,253,.35);
+}
+
+/* NEIRON artwork — offline local system, layered violet core */
+.art--neiron {
+  background:
+    radial-gradient(45% 70% at 50% 50%, rgba(139,92,246,.32), transparent 70%),
+    linear-gradient(180deg, #0a0816 0%, #17102a 60%, #090712 100%);
+}
+.art--neiron::before {
+  content: "";
+  position: absolute;
+  left: 50%; top: 52%;
+  width: 170px; height: 170px;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(196,181,253,.45);
+  border-radius: 50%;
+  box-shadow: inset 0 0 40px rgba(139,92,246,.25), 0 0 60px rgba(139,92,246,.18);
+  background: radial-gradient(circle, rgba(196,181,253,.22) 0 12%, transparent 13% 100%);
+}
+
+/* About symbol */
+.about-symbol {
+  position: relative;
+  width: 140px; height: 140px;
+}
+.about-symbol span {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(167,139,250,.4);
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  animation: spin 14s linear infinite;
+}
+.about-symbol span:nth-child(2) { inset: 18px; border-color: rgba(155,139,255,.4); animation-duration: 10s; animation-direction: reverse; }
+.about-symbol span:nth-child(3) { inset: 40px; border-color: rgba(255,184,119,.5); animation-duration: 7s; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -14px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .orbit, .world-core, .artifact, .about-symbol span { animation: none !important; }
+  .btn, .project-card { transition: none; }
+}

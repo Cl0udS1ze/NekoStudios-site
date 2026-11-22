@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="NekoStudios administration panel.">
+<meta name="theme-color" content="#07090f">
+<title>Панель управления — NekoStudios</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/auth.css">
+<link rel="stylesheet" href="css/admin.css">
+<script src="js/site.js" defer></script>
+<script src="js/config.js" defer></script>
+<script src="js/api.js" defer></script>
+<script src="js/site-settings.js" defer></script>
+<script src="js/auth.js" defer></script>
+<script src="js/ui.js" defer></script>
+<script src="js/i18n.js" defer></script>
+<script src="js/admin.js" defer></script>
+</head>
+<body data-page="auth" data-auth-page="admin">
+<a class="skip-link" href="#content">Skip to content</a>
+<div data-site-header data-active="none" data-base="index.html"></div>
+<main id="content">
+  <section class="page-hero"><div class="container">
+    <p class="eyebrow">Administration</p>
+    <h1>Панель управления</h1>
+    <p class="page-support">Управление аккаунтами, проектами и публикациями NekoStudios.</p>
+  </div></section>
+  <div class="container admin-tabs" id="admin-tabs" role="tablist">
+    <button type="button" class="admin-tab is-active" data-tab="info">Информация</button>
+    <button type="button" class="admin-tab" data-tab="accounts">Аккаунты</button>
+    <button type="button" class="admin-tab" data-tab="projects">Проекты</button>
+    <button type="button" class="admin-tab" data-tab="posts">Посты</button>
+    <button type="button" class="admin-tab" data-tab="settings">Настройки сайта</button>
+    <button type="button" class="admin-tab" data-tab="log">Журнал</button>
+    <button type="button" class="admin-tab" data-tab="team" data-i18n="team">Team</button>
+    <button type="button" class="admin-tab" data-tab="reviews" data-i18n="reviews">Reviews</button>
+  </div>
+  <section class="container admin-panel" id="admin-panel"></section>
+</main>
+<div data-site-footer data-active="none" data-base="index.html"></div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Log in to NekoStudios.">
+<meta name="theme-color" content="#07090f">
+<title>Log in — NekoStudios</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/auth.css">
+<script src="js/site.js" defer></script>
+<script src="js/config.js" defer></script>
+<script src="js/api.js" defer></script>
+<script src="js/site-settings.js" defer></script>
+<script src="js/auth.js" defer></script>
+<script src="js/ui.js" defer></script>
+<script src="js/i18n.js" defer></script>
+<script src="js/auth-pages.js" defer></script>
+</head>
+<body data-page="auth" data-auth-page="login">
+<a class="skip-link" href="#content">Skip to content</a>
+<div data-site-header data-active="none" data-base="index.html"></div>
+<main id="content">
+  <section class="auth-page"><div class="container">
+    <div class="auth-card">
+      <p class="eyebrow">Welcome back</p>
+      <h1>Log in</h1>
+      <p class="page-support">Use your username or email and password.</p>
+      <label class="auth-field"><span>Username or email</span>
+        <input id="login-identity" type="text" autocomplete="username" required></label>
+      <label class="auth-field"><span>Password</span>
+        <input id="login-password" type="password" autocomplete="current-password" required></label>
+      <div class="auth-error" id="auth-error" role="alert"></div>
+      <button type="button" class="btn btn--primary auth-submit" id="login-submit">Log in</button>
+      <a class="auth-link" href="register.html">New here? Create an account</a>
+    </div>
+  </div></section>
+</main>
+<div data-site-footer data-active="none" data-base="index.html"></div>
+</body>
+</html>
