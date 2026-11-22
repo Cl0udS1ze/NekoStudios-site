@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>DEEP MINE</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
+    background: #0b0d12; color: #e8eef5;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    user-select: none; -webkit-user-select: none; touch-action: none;
+    overscroll-behavior: none;
+  }
+  #c { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  #hud {
+    position: absolute; top: 0; left: 0; right: 0; z-index: 5;
+    display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+    padding: calc(env(safe-area-inset-top, 0px) + 8px) 96px 8px 8px;
+    background: linear-gradient(180deg, rgba(6,9,14,.92), rgba(6,9,14,.55) 70%, transparent);
+    pointer-events: none; font-size: 13px;
+  }
+  .res { display: flex; align-items: center; gap: 5px; padding: 4px 8px;
+    background: rgba(20,27,36,.85); border: 1px solid rgba(255,255,255,.12);
+    border-radius: 8px; font-variant-numeric: tabular-nums; }
+  .sw { width: 12px; height: 12px; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.5); }
+  .s-coal{background:#3a3f48}.s-iron{background:#c9a07a}.s-gold{background:#f2c14e}.s-diamond{background:#5fe0d8}
+  .s-coin{background:#ffd166;border-radius:50%}
+  #depth { margin-left: auto; padding: 4px 9px; background: rgba(20,27,36,.85);
+    border: 1px solid rgba(255,255,255,.12); border-radius: 8px; color: #ffd166; }
+  #newGame { pointer-events: auto; z-index: 6; position: absolute;
+    top: calc(env(safe-area-inset-top, 0px) + 8px); right: 8px;
+    padding: 7px 11px; font-size: 12px; color: #ffd7d2; background: rgba(120,40,36,.85);
+    border: 1px solid rgba(255,255,255,.2); border-radius: 8px; }
+  #controls {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 5;
+    display: flex; justify-content: space-between; align-items: flex-end;
+    padding: 0 10px calc(env(safe-area-inset-bottom, 0px) + 14px);
+    pointer-events: none;
+  }
+  .pad { position: relative; width: 156px; height: 156px; pointer-events: none; }
+  .btn { position: absolute; pointer-events: auto; display: flex; align-items: center; justify-content: center;
+    width: 50px; height: 50px; border-radius: 12px; font-size: 22px; font-weight: 700;
+    color: #eaf2fa; background: rgba(30,42,54,.72); border: 2px solid rgba(255,255,255,.28);
+    box-shadow: 0 3px 10px rgba(0,0,0,.35); touch-action: none; }
+  .btn.active { background: rgba(90,140,190,.9); transform: scale(.93); border-color: #ffd166; }
+  .btn.chosen { background: rgba(70,120,170,.75); border-color: #7fd8ff; }
+  .u{top:0;left:53px}.d{bottom:0;left:53px}.l{top:53px;left:0}.r{top:53px;right:0}
+  #digBtn { width: 74px; height: 74px; left: 41px; top: 41px; border-radius: 50%;
+    background: rgba(180,70,40,.85); border-color: #ffd166; font-size: 13px; line-height: 1.05; text-align:center; }
+  #digBtn.active { background: rgba(230,110,50,.95); }
+  #err { position: absolute; left: 6px; bottom: 178px; z-index: 20; max-width: 94%;
+    padding: 8px; background: rgba(140,30,30,.95); border-radius: 6px;
+    font: 12px monospace; color: #fff; display: none; }
+  #toast { position: absolute; z-index: 8; left: 50%; top: 18%; transform: translateX(-50%);
+    pointer-events: none; font-size: 17px; font-weight: 700; color: #fff;
+    text-shadow: 0 2px 6px #000, 0 0 10px #000; opacity: 0; transition: opacity .18s; }
+  #toast.show { opacity: 1; }
+  #interact { display: none; position: absolute; z-index: 7; left: 50%;
+    transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 182px);
+    padding: 11px 18px; font-size: 14px; font-weight: 700; color: #10202c;
+    background: #ffd166; border: 2px solid #fff2bd; border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.45); }
+  #interact.show { display: block; }
+  #modal { display: none; position: absolute; inset: 0; z-index: 12;
+    background: rgba(3,6,10,.72); align-items: center; justify-content: center; padding: 14px; }
+  #modal.show { display: flex; }
+  #panel { width: min(420px, 96vw); max-height: 84vh; overflow: auto;
+    background: #141c26; border: 2px solid #3d5169; border-radius: 14px; padding: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.6); }
+  #panel h2 { margin: 0 0 8px; font-size: 17px; color: #ffd166; }
+  #pBody { font-size: 13px; }
+  .shopRow { display: flex; align-items: center; gap: 9px; padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,.1); }
+  .shopIcon { width: 26px; height: 26px; flex: none; border-radius: 5px;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.5); }
+  .shopInfo { flex: 1; min-width: 0; }
+  .shopInfo b { display: block; font-size: 13px; }
+  .shopInfo span { display: block; font-size: 11px; color: #9fb2c6; }
+  .shopBuy { flex: none; padding: 7px 9px; font-size: 12px; border-radius: 8px;
+    color: #10202c; background: #7fd8b0; border: none; }
+  .shopBuy:disabled { background: #46545f; color: #9aa7b2; }
+  .shopTotal { margin: 12px 0; font-size: 15px; color: #ffe6a0; }
+  .panelBtn { width: 100%; padding: 11px; margin-top: 10px; font-size: 14px;
+    border-radius: 9px; color: #10202c; background: #ffd166; border: none; }
+  .panelBtn.ghost { background: #2a3644; color: #dce6f0; }
+  .empty { padding: 16px 4px; color: #b9c6d3; }
+  @media (max-height: 520px) { .pad{width:130px;height:130px}.btn{width:42px;height:42px;font-size:18px}
+    .u,.l{top:0;left:0}.u{left:44px}.d{bottom:0;left:44px}.l{top:44px;left:0}.r{top:44px;right:0}
+    #digBtn{width:60px;height:60px;left:35px;top:35px;font-size:11px} }
+  @media (orientation: landscape) and (max-height: 560px) {
+    #hud { font-size: 11px; gap: 4px;
+      padding: calc(env(safe-area-inset-top, 0px) + 4px) 84px 4px 6px; }
+    .res { padding: 2px 6px; } #depth { padding: 2px 6px; }
+    #newGame { top: calc(env(safe-area-inset-top, 0px) + 4px); right: 6px;
+      padding: 5px 8px; font-size: 11px; }
+    #controls { padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 6px); }
+    .pad { width: 120px; height: 120px; } .btn { width: 40px; height: 40px; font-size: 18px; }
+    .u{top:0;left:40px}.d{bottom:0;left:40px}.l{top:40px;left:0}.r{top:40px;right:0}
+    #digBtn { width:56px; height:56px; left:32px; top:32px; font-size:10px; }
+    #interact { bottom: calc(env(safe-area-inset-bottom, 0px) + 128px); padding: 7px 12px; font-size: 12px; }
+    #err { bottom: 140px; }
+    #modal, #modal.show { align-items: flex-end; padding: 8px; }
+    #panel { max-height: 46vh; }
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud">
+  <div class="res"><span class="sw s-coal"></span>Уголь <b id="nCoal">0</b></div>
+  <div class="res"><span class="sw s-iron"></span>Железо <b id="nIron">0</b></div>
+  <div class="res"><span class="sw s-gold"></span>Золото <b id="nGold">0</b></div>
+  <div class="res"><span class="sw s-diamond"></span>Алмазы <b id="nDia">0</b></div>
+  <div class="res"><span class="sw s-coin"></span>Монеты <b id="nCoins">0</b></div>
+  <div class="res">Рюкзак <b id="nBag">0 / 20</b></div>
+  <div class="res">Кирка: <b id="nPick">Деревянная</b></div>
+  <div id="depth">Глубина 0 м</div>
+</div>
+<button id="newGame">Новая игра</button>
+<button id="interact">Продать руду</button>
+<div id="toast"></div><div id="err"></div>
+<div id="modal"><div id="panel">
+  <h2 id="pTitle"></h2>
+  <div id="pBody"></div>
+  <button class="panelBtn" id="pAction" style="display:none"></button>
+  <button class="panelBtn ghost" id="pClose">Закрыть</button>
+</div></div>
+<div id="controls">
+  <div class="pad" id="movePad">
+    <div class="btn u" data-move="up">▲</div>
+    <div class="btn l" data-move="left">◀</div>
+    <div class="btn r" data-move="right">▶</div>
+    <div class="btn d" data-move="down">▼</div>
+  </div>
+  <div class="pad" id="digPad">
+    <div class="btn u" data-dig="up">▲</div>
+    <div class="btn l" data-dig="left">◀</div>
+    <div class="btn r" data-dig="right">▶</div>
+    <div class="btn d" data-dig="down">▼</div>
+    <div class="btn" id="digBtn">КОПАТЬ</div>
+  </div>
+</div>
+<script>
+window.addEventListener('error', function(e){
+  var d = document.getElementById('err');
+  if (d) { d.style.display='block'; d.textContent = 'JS ERROR: ' + e.message + ' (line ' + e.lineno + ')'; }
+});
+(function(){
+'use strict';
+
+// ---------- constants ----------
+var W = 100, H = 150, TILE = 32;
+var AIR=0, DIRT=1, STONE=2, COAL=3, IRON=4, GOLD=5, DIAMOND=6;
+var COLORS = {};
+COLORS[DIRT]   = ['#6b4a32','#7d583b','#5a3d29'];
+COLORS[STONE]  = ['#5c626b','#6d747e','#4a5058'];
+COLORS[COAL]   = ['#4a4f57','#5b616b','#333840'];
+COLORS[IRON]   = ['#8a6a4a','#c9a07a','#6b4f36'];
+COLORS[GOLD]   = ['#8a6a20','#f2c14e','#6b5018'];
+COLORS[DIAMOND]= ['#2a7f7a','#5fe0d8','#1d5a57'];
+var HARD = {}; HARD[DIRT]=0.32; HARD[STONE]=0.85; HARD[COAL]=1.15; HARD[IRON]=1.5; HARD[GOLD]=1.9; HARD[DIAMOND]=2.6;
+var NAME = {}; NAME[COAL]='+1 Уголь'; NAME[IRON]='+1 Железо'; NAME[GOLD]='+1 Золото'; NAME[DIAMOND]='+1 Алмаз';
+
+// --- Торговля и прокачка ---
+var ORES = [
+  { key:'coal',    tile:COAL,    name:'Уголь',   price:4  },
+  { key:'iron',    tile:IRON,    name:'Железо',  price:9  },
+  { key:'gold',    tile:GOLD,    name:'Золото',  price:22 },
+  { key:'diamond', tile:DIAMOND, name:'Алмаз',   price:60 }
+];
+// Старые миры должны сохранить прежнее расположение руд — в сейве хранится gen.
+var GEN_V1 = { coal:0.20,  iron:0.075, gold:0.018, diamond:0.004  };
+var GEN_V2 = { coal:0.12,  iron:0.045, gold:0.011, diamond:0.0025 };
+var PICKS = [
+  { name:'Деревянная кирка', speed:1.0, price:0,    color:'#8a5a34', desc:'Начальная кирка' },
+  { name:'Каменная кирка',   speed:1.5, price:140,  color:'#8b929c', desc:'Скорость копания +50%' },
+  { name:'Железная кирка',   speed:2.2, price:420,  color:'#c9a07a', desc:'Скорость копания +120%' },
+  { name:'Золотая кирка',    speed:3.2, price:1000, color:'#f2c14e', desc:'Скорость копания +220%' },
+  { name:'Алмазная кирка',   speed:4.5, price:2000, color:'#5fe0d8', desc:'Скорость копания +350%' }
+];
+var BAGS = [
+  { name:'Маленький рюкзак', cap:20,  price:0,    desc:'Берёт 20 руды' },
+  { name:'Рюкзак 40',        cap:40,  price:280,  desc:'Берёт 40 руды' },
+  { name:'Рюкзак 70',        cap:70,  price:750,  desc:'Берёт 70 руды' },
+  { name:'Рюкзак 120',       cap:120, price:1600, desc:'Берёт 120 руды' }
+];
+// Оба ларька стоят на поверхности рядом с шахтой (столбцы 55–60).
+var SHOPS = [
+  { kind:'sell', name:'Скупка руды', x:55*TILE, y:4*TILE, label:'Продать руду' },
+  { kind:'gear', name:'Снаряжение',  x:59*TILE, y:4*TILE, label:'Открыть магазин' }
+];
+var SAVE_KEY = 'deepmine_save_v1';
+
+// ---------- dom ----------
+var canvas = document.getElementById('c');
+var ctx = canvas.getContext('2d', { alpha:false });
+var toastEl = document.getElementById('toast');
+var ui = { coal:document.getElementById('nCoal'), iron:document.getElementById('nIron'),
+  gold:document.getElementById('nGold'), dia:document.getElementById('nDia'), depth:document.getElementById('depth'),
+  coins:document.getElementById('nCoins'), bag:document.getElementById('nBag'), pick:document.getElementById('nPick') };
+var interactBtn = document.getElementById('interact');
+var modal = document.getElementById('modal'), pTitle = document.getElementById('pTitle');
+var pBody = document.getElementById('pBody'), pAction = document.getElementById('pAction');
+var pClose = document.getElementById('pClose');
+
+// ---------- state ----------
+var world, seed, player, cam = {x:0,y:0}, res = {coal:0,iron:0,gold:0,diamond:0};
+var move = {up:false,down:false,left:false,right:false};
+var dig  = {up:false,down:false,left:false,right:false};
+var digging = false, digProgress = 0, digTarget = null, digAnim = 0, toastTimer = 0, last = 0;
+var digDir = {x:0,y:1}, chosenDirBtn = null;
+var viewW = 0, viewH = 0, dpr = 1;
+// coins — монеты, pickIdx — текущая кирка, bagIdx — текущий рюкзак.
+var coins = 0, pickIdx = 0, bagIdx = 0;
+var nearShop = null, modalOpen = false, bagFullTimer = 0;
+var legacyGen = false; // true для миров, созданных до изменения баланса руд
+// Состояние клавиатуры/мыши отделено от тач-кнопок, чтобы они не конфликтовали.
+var keyMove = {up:false,down:false,left:false,right:false}, pcDigging = false;
+var lastDepthShown = -1;
+
+// ---------- utils ----------
+function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; var t=Math.imul(a^a>>>15,1|a);
+  t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+function clamp(v,a,b){ return v<a?a:(v>b?b:v); }
+function hash2(x,y){ var n=x*374761393+y*668265263; n=(n^(n>>>13))*1274126177; return ((n^(n>>>16))>>>0)/4294967295; }
+
+// ---------- world ----------
+function generateWorld(s, legacy){
+  var rnd = mulberry32(s), w = new Uint8Array(W*H), R = legacy ? GEN_V1 : GEN_V2;
+  for (var y=0;y<H;y++){
+    for (var x=0;x<W;x++){
+      var t;
+      if (y < 5) t = AIR;
+      else if (y < 16) t = DIRT;
+      else {
+        var r = rnd();
+        if (y > 92 && r < R.diamond) t = DIAMOND;
+        else if (y > 45 && r < R.gold) t = GOLD;
+        else if (y > 12 && r < R.iron) t = IRON;
+        else if (r < R.coal) t = COAL;
+        else t = STONE;
+      }
+      w[y*W+x] = t;
+    }
+  }
+  // a small starting shaft so the miner has room to move
+  for (var yy=5; yy<10; yy++) for (var xx=47; xx<=52; xx++) w[yy*W+xx]=AIR;
+  return w;
+}
+function tileAt(tx,ty){
+  if (tx<0||ty<0||tx>=W||ty>=H) return STONE;
+  return world[ty*W+tx];
+}
+function setTile(tx,ty,t){
+  if (tx<0||ty<0||tx>=W||ty>=H) return;
+  world[ty*W+tx] = t;
+}
+
+// ---------- save / load ----------
+function saveGame(){
+  try {
+    var changed = [];
+    for (var i=0;i<world.length;i++) if (world[i]!==original[i]) changed.push(i, world[i]);
+    localStorage.setItem(SAVE_KEY, JSON.stringify({
+      v:1, seed:seed, px:player.x, py:player.y, res:res, changed:changed,
+      depth:Math.max(0, Math.floor((player.y/TILE-5))),
+      coins:coins, pick:pickIdx, bag:bagIdx, bagCap:BAGS[bagIdx].cap,
+      gen:legacyGen?1:2
+    }));
+  } catch(e){}
+}
+var original = null, loadedPos = null;
+function loadGame(){
+  try {
+    var raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return false;
+    var d = JSON.parse(raw);
+    if (!d || d.v!==1 || typeof d.seed!=='number') return false;
+    seed = d.seed;
+    legacyGen = d.gen!==2; // сейвы без поля gen используют старую генерацию
+    world = generateWorld(seed, legacyGen);
+    original = generateWorld(seed, legacyGen);
+    var ch = d.changed || [];
+    for (var i=0;i+1<ch.length;i+=2) world[ch[i]] = ch[i+1];
+    res.coal = d.res && d.res.coal || 0; res.iron = d.res && d.res.iron || 0;
+    res.gold = d.res && d.res.gold || 0; res.diamond = d.res && d.res.diamond || 0;
+    // Новые поля отсутствуют в старых сохранениях — безопасные значения по умолчанию.
+    coins = Math.max(0, Math.floor(+d.coins || 0));
+    pickIdx = clamp(Math.floor(+d.pick || 0), 0, PICKS.length-1);
+    bagIdx = clamp(Math.floor(+d.bag || 0), 0, BAGS.length-1);
+    if (d.bagCap && d.bag===undefined){
+      for (var bi=0; bi<BAGS.length; bi++) if (BAGS[bi].cap===+d.bagCap){ bagIdx=bi; break; }
+    }
+    loadedPos = { x: clamp(+d.px || 48*TILE, 0, W*TILE-24),
+                  y: clamp(+d.py || 7*TILE, 0, H*TILE-28) };
+    return true;
+  } catch(e){ return false; }
+}
+function newGame(){
+  if (!confirm('Начать новую шахту? Текущий мир будет удалён.')) return;
+  try { localStorage.removeItem(SAVE_KEY); } catch(e){}
+  seed = (Math.random()*0x7fffffff)|0;
+  legacyGen = false;
+  world = generateWorld(seed);
+  original = generateWorld(seed);
+  res = {coal:0,iron:0,gold:0,diamond:0};
+  coins = 0; pickIdx = 0; bagIdx = 0;
+  player.x = 48*TILE+4; player.y = 6*TILE+2;
+  cam.x = player.x - viewW/2; cam.y = player.y - viewH/2;
+  digProgress = 0; digTarget = null;
+  saveGame(); updateHud();
+}
+var player = { x:48*TILE+4, y:6*TILE+2, w:24, h:28, vx:0, vy:0, walk:0, swing:0 };
+if (!loadGame()){
+  seed = (Math.random()*0x7fffffff)|0;
+  legacyGen = false;
+  world = generateWorld(seed); original = generateWorld(seed);
+  res = {coal:0,iron:0,gold:0,diamond:0};
+  coins = 0; pickIdx = 0; bagIdx = 0;
+  player.x = 48*TILE+4; player.y = 6*TILE+2;
+  digProgress = 0; digTarget = null;
+} else {
+  player.x = loadedPos.x; player.y = loadedPos.y;
+}
+cam.x = player.x - viewW/2; cam.y = player.y - viewH/2;
+
+// ---------- input ----------
+function bindPad(sel, state, key){
+  var btns = document.querySelectorAll(sel);
+  for (var i=0;i<btns.length;i++){
+    (function(el){
+      var pid = null;
+      el.addEventListener('pointerdown', function(e){
+        e.preventDefault(); pid = e.pointerId;
+        try { el.setPointerCapture(e.pointerId); } catch(err){}
+        state[el.getAttribute(key)] = true; el.classList.add('active');
+      });
+      function up(e){
+        if (pid!==null && e.pointerId!==pid) return;
+        e.preventDefault(); pid=null; state[el.getAttribute(key)]=false; el.classList.remove('active');
+      }
+      el.addEventListener('pointerup', up);
+      el.addEventListener('pointercancel', up);
+      el.addEventListener('lostpointercapture', up);
+    })(btns[i]);
+  }
+}
+bindPad('[data-move]', move, 'data-move');
+// Направление кирки фиксируется одним нажатием и сохраняется после отпускания.
+(function(){
+  var btns = document.querySelectorAll('[data-dig]');
+  for (var i=0;i<btns.length;i++){
+    (function(el){
+      var dir = el.getAttribute('data-dig');
+      var v = dir==='left' ? {x:-1,y:0} : dir==='right' ? {x:1,y:0}
+            : dir==='up' ? {x:0,y:-1} : {x:0,y:1};
+      el.addEventListener('pointerdown', function(e){
+        e.preventDefault();
+        digDir = v;
+        if (chosenDirBtn) chosenDirBtn.classList.remove('chosen');
+        chosenDirBtn = el; el.classList.add('chosen', 'active');
+      });
+      function up(e){ e.preventDefault(); el.classList.remove('active'); }
+      el.addEventListener('pointerup', up);
+      el.addEventListener('pointercancel', up);
+      el.addEventListener('lostpointercapture', up);
+    })(btns[i]);
+  }
+})();
+(function(){
+  var b = document.getElementById('digBtn'), pid=null;
+  b.addEventListener('pointerdown', function(e){ e.preventDefault(); pid=e.pointerId;
+    try{ b.setPointerCapture(e.pointerId); }catch(err){}
+    digging=true; digProgress=0; b.classList.add('active'); });
+  function up(e){ if(pid!==null && e.pointerId!==pid) return; e.preventDefault(); pid=null;
+    digging=false; digProgress=0; b.classList.remove('active'); }
+  b.addEventListener('pointerup',up); b.addEventListener('pointercancel',up);
+  b.addEventListener('lostpointercapture',up);
+})();
+document.getElementById('newGame').addEventListener('click', newGame);
+function openShop(){
+  if (!nearShop) return;
+  if (nearShop.kind==='sell') openSell(); else openGear();
+}
+interactBtn.addEventListener('click', openShop);
+pClose.addEventListener('click', closeModal);
+document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+document.addEventListener('gesturestart', function(e){ e.preventDefault(); });
+
+// ---------- клавиатура и мышь (ПК) ----------
+function setKeyDigDir(v, selector){
+  digDir = v;
+  if (chosenDirBtn) chosenDirBtn.classList.remove('chosen');
+  chosenDirBtn = document.querySelector(selector);
+  if (chosenDirBtn) chosenDirBtn.classList.add('chosen');
+}
+function resetPcInput(){
+  keyMove.up = keyMove.down = keyMove.left = keyMove.right = false;
+  pcDigging = false;
+}
+window.addEventListener('keydown', function(e){
+  var code = e.keyCode || e.which || 0;
+  var k = (e.key || '').toLowerCase();
+  if (code===32) k=' ';
+  if (modalOpen){
+    if (k==='escape' || k===' ' || k==='enter'){ closeModal(); e.preventDefault(); }
+    return;
+  }
+  if (k==='w'){ keyMove.up=true; }
+  else if (k==='s'){ keyMove.down=true; }
+  else if (k==='a'){ keyMove.left=true; }
+  else if (k==='d'){ keyMove.right=true; }
+  else if (k==='arrowup'){ setKeyDigDir({x:0,y:-1},'[data-dig="up"]'); }
+  else if (k==='arrowdown'){ setKeyDigDir({x:0,y:1},'[data-dig="down"]'); }
+  else if (k==='arrowleft'){ setKeyDigDir({x:-1,y:0},'[data-dig="left"]'); }
+  else if (k==='arrowright'){ setKeyDigDir({x:1,y:0},'[data-dig="right"]'); }
+  else if (k==='e'){ openShop(); }
+  else if (k===' '){
+    if (nearShop) openShop(); else pcDigging=true;
+  }
+  else return;
+  e.preventDefault();
+});
+window.addEventListener('keyup', function(e){
+  var code = e.keyCode || e.which || 0;
+  var k = (e.key || '').toLowerCase();
+  if (code===32) k=' ';
+  if (k==='w') keyMove.up=false;
+  else if (k==='s') keyMove.down=false;
+  else if (k==='a') keyMove.left=false;
+  else if (k==='d') keyMove.right=false;
+  else if (k===' ') pcDigging=false;
+  else return;
+  e.preventDefault();
+});
+window.addEventListener('blur', resetPcInput);
+canvas.addEventListener('mousedown', function(e){
+  if (e.button!==0 || modalOpen) return;
+  e.preventDefault();
+  if (nearShop) openShop(); else { pcDigging=true; digProgress=0; }
+});
+window.addEventListener('mouseup', function(e){
+  if (e.button!==0) return;
+  pcDigging=false;
+});
+
+// ---------- helpers ----------
+function toast(text){
+  toastEl.textContent = text; toastEl.classList.add('show'); toastTimer = 1.4;
+}
+function bagUsed(){ return res.coal+res.iron+res.gold+res.diamond; }
+function bagCap(){ return BAGS[bagIdx].cap; }
+function updateHud(){
+  ui.coal.textContent = res.coal; ui.iron.textContent = res.iron;
+  ui.gold.textContent = res.gold; ui.dia.textContent = res.diamond;
+  ui.coins.textContent = coins;
+  ui.bag.textContent = bagUsed() + ' / ' + bagCap();
+  ui.pick.textContent = PICKS[pickIdx].name.replace(' кирка','');
+  lastDepthShown = Math.max(0, Math.floor(player.y/TILE - 5));
+  ui.depth.textContent = 'Глубина ' + lastDepthShown + ' м';
+}
+function isSolid(tx,ty){ var t = tileAt(tx,ty); return t!==AIR; }
+// --- Видимость руд ---
+// Руда показывается только если к ней примыкает хотя бы одна пустая клетка.
+function isOre(t){ return t===COAL||t===IRON||t===GOLD||t===DIAMOND; }
+function oreExposed(tx,ty){
+  return tileAt(tx,ty-1)===AIR || tileAt(tx+1,ty)===AIR ||
+         tileAt(tx,ty+1)===AIR || tileAt(tx-1,ty)===AIR;
+}
+// Визуальный вид скрытой руды: берём вид соседнего непрозрачного блока.
+// Используется ТОЛЬКО как параметр отрисовки — world[] не изменяется.
+function oreHiddenLook(tx,ty){
+  var n = [tileAt(tx,ty-1), tileAt(tx+1,ty), tileAt(tx,ty+1), tileAt(tx-1,ty)];
+  for (var i=0;i<4;i++) if (n[i]!==AIR && !isOre(n[i])) return n[i];
+  return ty<16 ? DIRT : STONE;
+}
+function wallAt(px,py){
+  var y0 = Math.floor(py/TILE), y1 = Math.floor((py+player.h-0.01)/TILE);
+  for (var t=y0;t<=y1;t++){
+    if (isSolid(Math.floor((px-2)/TILE), t)) return -1;
+    if (isSolid(Math.floor((px+player.w+2)/TILE), t)) return 1;
+  }
+  return 0;
+}
+function collides(px,py){
+  var x0 = Math.floor(px/TILE), y0 = Math.floor(py/TILE);
+  var x1 = Math.floor((px+player.w-0.01)/TILE), y1 = Math.floor((py+player.h-0.01)/TILE);
+  for (var ty=y0;ty<=y1;ty++) for (var tx=x0;tx<=x1;tx++) if (isSolid(tx,ty)) return true;
+  return false;
+}
+function digDirection(){ return digDir; }
+
+// ---------- торговля и прокачка ----------
+function shopRow(name, desc, price, color, label, attrs){
+  return '<div class="shopRow"><span class="shopIcon" style="background:'+color+'"></span>'+
+    '<div class="shopInfo"><b>'+name+'</b><span>'+desc+'</span><span>Цена: '+price+' монет</span></div>'+
+    '<button class="shopBuy" '+attrs+'>'+label+'</button></div>';
+}
+function showModal(title, html, actionLabel, action){
+  pTitle.textContent = title;
+  pBody.innerHTML = html;
+  if (actionLabel){ pAction.style.display='block'; pAction.textContent=actionLabel; pAction.onclick=action; }
+  else { pAction.style.display='none'; pAction.onclick=null; }
+  modal.classList.add('show');
+  modalOpen = true;
+  digging = false;
+  pcDigging = false;
+  resetPcInput();
+  move.up = move.down = move.left = move.right = false;
+  dig.up = dig.down = dig.left = dig.right = false;
+  interactBtn.classList.remove('show');
+}
+function closeModal(){
+  modalOpen = false;
+  modal.classList.remove('show');
+  pAction.onclick = null;
+}
+function openSell(){
+  var rows='', total=0, any=false;
+  for (var i=0;i<ORES.length;i++){
+    var o=ORES[i], n=res[o.key]||0;
+    if (n<=0) continue;
+    any = true;
+    var sum = n*o.price; total += sum;
+    rows += '<div class="shopRow"><span class="shopIcon" style="background:'+COLORS[o.tile][1]+'"></span>'+
+      '<div class="shopInfo"><b>'+o.name+' × '+n+'</b><span>'+o.price+' монет за шт. · итого '+sum+'</span></div></div>';
+  }
+  if (!any) showModal('Скупка руды','<div class="empty">У тебя пока нет руды для продажи</div>',null,null);
+  else showModal('Скупка руды', rows+'<div class="shopTotal">Всего: '+total+' монет</div>', 'Продать всё', sellAll);
+}
+function sellAll(){
+  var total=0;
+  for (var i=0;i<ORES.length;i++){ total += (res[ORES[i].key]||0)*ORES[i].price; res[ORES[i].key]=0; }
+  if (total<=0){ toast('У тебя пока нет руды для продажи'); return; }
+  coins += total;
+  toast('+'+total+' монет');
+  updateHud(); saveGame(); openSell();
+}
+function openGear(){
+  var html='<div style="margin-bottom:6px;color:#9fb2c6">Кирки</div>';
+  for (var i=0;i<PICKS.length;i++){
+    var p=PICKS[i], has=i<=pickIdx;
+    html += shopRow(p.name, p.desc+' · скорость ×'+p.speed.toFixed(1), p.price, p.color,
+      has ? 'Экипирована' : 'Купить', has ? 'disabled' : 'data-pick="'+i+'"'+(coins<p.price?' disabled':''));
+  }
+  html += '<div style="margin:10px 0 6px;color:#9fb2c6">Рюкзаки · сейчас '+bagUsed()+'/'+bagCap()+'</div>';
+  for (var j=0;j<BAGS.length;j++){
+    var b=BAGS[j], hasB=j<=bagIdx;
+    html += shopRow(b.name, b.desc, b.price, '#9a7852',
+      hasB ? 'Куплено' : 'Купить', hasB ? 'disabled' : 'data-bag="'+j+'"'+(coins<b.price?' disabled':''));
+  }
+  showModal('Снаряжение', html, null, null);
+  var picks = pBody.querySelectorAll('[data-pick]');
+  for (var k=0;k<picks.length;k++){
+    (function(el){ el.onclick=function(){ buyPick(+el.getAttribute('data-pick')); }; })(picks[k]);
+  }
+  var bags = pBody.querySelectorAll('[data-bag]');
+  for (var m=0;m<bags.length;m++){
+    (function(el){ el.onclick=function(){ buyBag(+el.getAttribute('data-bag')); }; })(bags[m]);
+  }
+}
+function buyPick(i){
+  if (i<=pickIdx || i>=PICKS.length) return;
+  if (coins < PICKS[i].price){ toast('Не хватает монет'); return; }
+  coins -= PICKS[i].price; pickIdx = i;
+  toast(PICKS[i].name+' экипирована');
+  updateHud(); saveGame(); openGear();
+}
+function buyBag(i){
+  if (i<=bagIdx || i>=BAGS.length) return;
+  if (coins < BAGS[i].price){ toast('Не хватает монет'); return; }
+  coins -= BAGS[i].price; bagIdx = i;
+  toast(BAGS[i].name+' куплен');
+  updateHud(); saveGame(); openGear();
+}
+function nearestShop(){
+  var cx=player.x+player.w/2, cy=player.y+player.h/2, best=null, bd=1e9;
+  for (var i=0;i<SHOPS.length;i++){
+    var s=SHOPS[i], dx=cx-(s.x+48), dy=cy-(s.y+16);
+    if (Math.abs(dx)<76 && Math.abs(dy)<64 && Math.abs(dx)+Math.abs(dy)<bd){
+      bd=Math.abs(dx)+Math.abs(dy); best=s;
+    }
+  }
+  return best;
+}
+function updateInteract(){
+  if (modalOpen) return;
+  nearShop = nearestShop();
+  if (nearShop){ interactBtn.textContent=nearShop.label; interactBtn.classList.add('show'); }
+  else { nearShop=null; interactBtn.classList.remove('show'); }
+}
+
+// ---------- update ----------
+function update(dt){
+  if (modalOpen){
+    if (toastTimer>0){ toastTimer-=dt; if (toastTimer<=0) toastEl.classList.remove('show'); }
+    return;
+  }
+  if (bagFullTimer>0) bagFullTimer-=dt;
+  var dx = ((move.right||keyMove.right)?1:0)-((move.left||keyMove.left)?1:0);
+  var dy = ((move.down||keyMove.down)?1:0)-((move.up||keyMove.up)?1:0);
+  if (dx||dy){
+    var len = Math.hypot(dx,dy); dx/=len; dy/=len; player.walk += dt*10;
+  } else player.walk += dt*2;
+  var speed = 132, climbSpeed = 108, gravity = 520, maxFall = 340;
+  // Wall contact: only climb when a solid block is directly beside the miner.
+  var wall = wallAt(player.x, player.y);
+  if (wall!==0 && dy<0) player.vy = -climbSpeed;        // climb up the wall
+  else if (wall!==0 && dy>0) player.vy = climbSpeed*1.15; // climb/slide down
+  else player.vy = Math.min(maxFall, player.vy + gravity*dt); // gravity always
+  if (collides(player.x, player.y+1) && player.vy>0 && dy>=0) player.vy = 0;
+
+  var mx = dx*speed*dt, my = player.vy*dt;
+  // axis separated movement with steps to avoid tunnelling
+  var steps = Math.max(1, Math.ceil(Math.max(Math.abs(mx),Math.abs(my))/(TILE*0.4)));
+  for (var s=0;s<steps;s++){
+    var nx = player.x + mx/steps;
+    if (!collides(nx, player.y)) player.x = nx; else player.vx = 0;
+    var ny = player.y + my/steps;
+    if (!collides(player.x, ny)) player.y = ny;
+    else { player.vy = 0; my = 0; }
+  }
+  player.x = clamp(player.x, 0, W*TILE-player.w);
+  player.y = clamp(player.y, 0, H*TILE-player.h);
+
+  // digging
+  player.swing = Math.max(0, player.swing - dt*4);
+  var dir = digDirection();
+  var cx = player.x + player.w/2, cy = player.y + player.h/2;
+  var tx = Math.floor((cx + dir.x*(player.w/2 + TILE*0.55))/TILE);
+  var ty = Math.floor((cy + dir.y*(player.h/2 + TILE*0.55))/TILE);
+  var t = tileAt(tx,ty);
+  var isDigging = digging || pcDigging;
+  if (isDigging && t!==AIR){
+    player.swing = 1;
+    if (!digTarget || digTarget.x!==tx || digTarget.y!==ty || digTarget.t!==t){
+      digTarget = {x:tx,y:ty,t:t}; digProgress = 0;
+    }
+    digProgress += dt * PICKS[pickIdx].speed / HARD[t];
+    if (digProgress >= 1){
+      var got = t;
+      if (isOre(got) && bagUsed() >= bagCap()){
+        // Рюкзак полон: блок не разрушаем, руда не теряется.
+        if (bagFullTimer<=0){ toast('Рюкзак полон! Продай руду или купи новый'); bagFullTimer=2.5; }
+        digTarget = null; digProgress = 0;
+      } else {
+        setTile(tx,ty,AIR);
+        if (got===COAL) res.coal++; else if (got===IRON) res.iron++;
+        else if (got===GOLD) res.gold++; else if (got===DIAMOND) res.diamond++;
+        if (NAME[got]) toast(NAME[got]);
+        digTarget = null; digProgress = 0; updateHud(); saveGame();
+      }
+    }
+  } else {
+    digTarget = null; digProgress = 0;
+  }
+
+  // camera (smooth, clamped)
+  var targetX = player.x + player.w/2 - viewW/2;
+  var targetY = player.y + player.h/2 - viewH/2;
+  var k = Math.min(1, dt*7);
+  cam.x += (targetX-cam.x)*k; cam.y += (targetY-cam.y)*k;
+  if (W*TILE <= viewW) cam.x = (W*TILE-viewW)/2; else cam.x = clamp(cam.x,0,W*TILE-viewW);
+  if (H*TILE <= viewH) cam.y = (H*TILE-viewH)/2; else cam.y = clamp(cam.y,0,H*TILE-viewH);
+  updateInteract();
+  // Глубина обновляется каждый кадр по положению игрока, а не только при добыче.
+  var dep = Math.max(0, Math.floor(player.y/TILE - 5));
+  if (dep!==lastDepthShown){ lastDepthShown=dep; ui.depth.textContent='Глубина '+dep+' м'; }
+  if (toastTimer>0){ toastTimer-=dt; if (toastTimer<=0) toastEl.classList.remove('show'); }
+}
+
+// ---------- render ----------
+// t — настоящий тип блока из карты мира (никогда не подменяется в данных).
+// visualT и showOre — только параметры отрисовки скрытой руды.
+function drawBlock(t, sx, sy, tx, ty, visualT, showOre){
+  var drawT = (visualT===undefined) ? t : visualT;
+  var cols = COLORS[drawT];
+  ctx.fillStyle = cols[0]; ctx.fillRect(sx,sy,TILE,TILE);
+  var h = hash2(tx,ty);
+  ctx.fillStyle = cols[1];
+  ctx.fillRect(sx+2+((h*7)|0)%6, sy+3+((h*13)|0)%5, 5,4);
+  ctx.fillRect(sx+14+((h*11)|0)%7, sy+16+((h*17)|0)%6, 6,5);
+  ctx.fillStyle = cols[2];
+  ctx.fillRect(sx+3, sy+TILE-4, TILE-6, 2);
+  // Текстуру руды рисуем только если у неё есть открытая сторона.
+  if (isOre(t) && showOre!==false){
+    var oreCols = COLORS[t];
+    ctx.fillStyle = oreCols[1];
+    ctx.fillRect(sx+8, sy+8, 7,7);
+    ctx.fillRect(sx+17, sy+18, 5,5);
+    ctx.fillStyle = oreCols[2];
+    ctx.fillRect(sx+10, sy+10, 3,3);
+    if (t===DIAMOND){ ctx.fillStyle='#d9ffff'; ctx.fillRect(sx+9,sy+9,2,2); }
+  }
+}
+function drawMiner(){
+  var x = Math.round(player.x-cam.x), y = Math.round(player.y-cam.y);
+  var walking = (move.left||move.right||move.up||move.down||
+                 keyMove.left||keyMove.right||keyMove.up||keyMove.down);
+  var bob = walking ? Math.round(Math.sin(player.walk)*1.5) : 0;
+  var swing = player.swing;
+  ctx.save(); ctx.translate(x, y+bob);
+  // legs
+  ctx.fillStyle='#2b3440';
+  var leg = walking ? Math.round(Math.sin(player.walk)*2) : 0;
+  ctx.fillRect(5, 20, 6, 8+leg); ctx.fillRect(13, 20, 6, 8-leg);
+  ctx.fillStyle='#1b222b'; ctx.fillRect(4, 26, 7, 3); ctx.fillRect(13, 26, 7, 3);
+  // body
+  ctx.fillStyle='#3f6fa8'; ctx.fillRect(4, 10, 16, 11);
+  ctx.fillStyle='#2d5180'; ctx.fillRect(4, 18, 16, 3);
+  // head
+  ctx.fillStyle='#e0b48c'; ctx.fillRect(6, 3, 12, 8);
+  ctx.fillStyle='#20262e'; ctx.fillRect(9, 6, 2,2); ctx.fillRect(14,6,2,2);
+  // helmet
+  ctx.fillStyle='#f2c14e'; ctx.fillRect(4, 0, 16, 5);
+  ctx.fillRect(2, 3, 20, 3);
+  ctx.fillStyle='#fff3b0'; ctx.fillRect(10, 1, 4, 3);
+  // pickaxe (swing animation)
+  var dir = digDirection();
+  var ang = dir.x<0 ? Math.PI : dir.x>0 ? 0 : dir.y<0 ? -Math.PI/2 : Math.PI/2;
+  ctx.save(); ctx.translate(12, 13);
+  ctx.rotate(ang + (swing ? Math.sin((1-swing)*Math.PI)*0.9-0.45 : -0.25));
+  ctx.fillStyle='#8a5a34'; ctx.fillRect(0,-1,14,3);
+  ctx.fillStyle=PICKS[pickIdx].color; ctx.fillRect(11,-5,4,9);
+  ctx.fillStyle='#9aa3ac'; ctx.fillRect(12,-4,2,7);
+  ctx.restore();
+  ctx.restore();
+}
+// Сидящий за прилавком старик-скупщик — отличается от шахтёра седыми волосами и бородой.
+function drawBuyer(x,y){
+  ctx.fillStyle='#48586a'; ctx.fillRect(x+5,y+11,16,14);       // тело
+  ctx.fillStyle='#dcb48d'; ctx.fillRect(x+7,y+4,12,9);          // лицо
+  ctx.fillStyle='#d3d8dd'; ctx.fillRect(x+7,y+2,12,4);          // седые волосы
+  ctx.fillRect(x+8,y+11,10,5);                                   // борода
+  ctx.fillStyle='#222'; ctx.fillRect(x+10,y+7,2,2); ctx.fillRect(x+15,y+7,2,2);
+  ctx.fillStyle='#7a6448'; ctx.fillRect(x+6,y+0,14,3);          // шапка
+}
+function drawSeller(x,y){
+  ctx.fillStyle='#2f7a5a'; ctx.fillRect(x+5,y+11,16,14);        // жилет
+  ctx.fillStyle='#dcb48d'; ctx.fillRect(x+7,y+4,12,9);
+  ctx.fillStyle='#3a2a1c'; ctx.fillRect(x+7,y+2,12,3);          // волосы
+  ctx.fillStyle='#222'; ctx.fillRect(x+10,y+7,2,2); ctx.fillRect(x+15,y+7,2,2);
+  ctx.fillStyle='#25684e'; ctx.fillRect(x+5,y+1,16,3);          // шляпа
+  ctx.fillRect(x+8,y-3,10,4);
+}
+function drawShops(){
+  for (var i=0;i<SHOPS.length;i++){
+    var s=SHOPS[i], x=Math.round(s.x-cam.x), y=Math.round(s.y-cam.y);
+    if (x>viewW+40 || x+96<-40 || y>viewH+60 || y+40<-60) continue;
+    var sell = s.kind==='sell';
+    // стойка и навес
+    ctx.fillStyle='#4a3121'; ctx.fillRect(x+2,y+22,92,10);
+    ctx.fillStyle='#6b4630'; ctx.fillRect(x+2,y+22,92,3);
+    ctx.fillStyle=sell?'#a8433a':'#2f7a8a'; ctx.fillRect(x,y-10,96,7);
+    ctx.fillStyle='#e8dcc4';
+    for (var k=0;k<6;k++) ctx.fillRect(x+4+k*16,y-10,8,7);
+    ctx.fillStyle='#5a3a24'; ctx.fillRect(x+3,y-3,4,25); ctx.fillRect(x+89,y-3,4,25);
+    // NPC за прилавком
+    if (sell) drawBuyer(x+36,y+6); else drawSeller(x+36,y+6);
+    // вывеска
+    ctx.fillStyle='rgba(12,18,26,.88)'; ctx.fillRect(x+8,y-30,80,17);
+    ctx.strokeStyle=sell?'#ffb27a':'#7fd8ff'; ctx.lineWidth=1;
+    ctx.strokeRect(x+8,y-30,80,17);
+    ctx.fillStyle='#ffffff'; ctx.font='bold 11px sans-serif';
+    ctx.textAlign='center'; ctx.fillText(s.name, x+48, y-18); ctx.textAlign='left';
+  }
+}
+function render(){
+  ctx.fillStyle='#0a0d13'; ctx.fillRect(0,0,viewW,viewH);
+  var x0 = Math.max(0, Math.floor(cam.x/TILE));
+  var y0 = Math.max(0, Math.floor(cam.y/TILE));
+  var x1 = Math.min(W-1, Math.ceil((cam.x+viewW)/TILE));
+  var y1 = Math.min(H-1, Math.ceil((cam.y+viewH)/TILE));
+  for (var ty=y0;ty<=y1;ty++){
+    for (var tx=x0;tx<=x1;tx++){
+      var t = world[ty*W+tx]; // настоящий тип блока — данные мира не меняем
+      if (t===AIR) continue;
+      var visualT = undefined, showOre = true;
+      // Видимость считается из живого мира каждый кадр: соседний блок
+      // разрушен/поставлен — руда сразу станет видна/скрыта.
+      if (isOre(t) && !oreExposed(tx,ty)){
+        visualT = oreHiddenLook(tx,ty);
+        showOre = false;
+      }
+      drawBlock(t, Math.round(tx*TILE-cam.x), Math.round(ty*TILE-cam.y), tx, ty, visualT, showOre);
+    }
+  }
+  drawShops();
+  // dig target outline + progress
+  if (digTarget && (digging || pcDigging)){
+    var sx = Math.round(digTarget.x*TILE-cam.x), sy = Math.round(digTarget.y*TILE-cam.y);
+    ctx.strokeStyle='#ffd166'; ctx.lineWidth=2; ctx.strokeRect(sx+1,sy+1,TILE-2,TILE-2);
+    ctx.fillStyle='rgba(0,0,0,.65)'; ctx.fillRect(sx+3,sy+TILE-8,TILE-6,5);
+    ctx.fillStyle='#ffd166'; ctx.fillRect(sx+4,sy+TILE-7,(TILE-8)*clamp(digProgress,0,1),3);
+  }
+  // Отдельный слой затемнения поверх всего мира.
+  drawDarkness();
+  // Шахтёр рисуется последним — он остаётся видимым в любой темноте.
+  drawMiner();
+}
+// Затемнение шахты по глубине игрока. Никаких фонарей и источников света.
+function drawDarkness(){
+  // 0 на поверхности (ряд 4), 1 начиная с ряда 64. Плавно, без ступеней.
+  var raw = clamp((player.y/TILE - 4)/60, 0, 1);
+  if (raw<=0.001) return;
+  var d = raw*raw*(3-2*raw); // smoothstep
+  var maxA = 0.06 + 0.86*d;  // на глубине почти чёрный экран
+  // Центр слоя привязан к шахтёру и следует за камерой.
+  var px = player.x + player.w/2 - cam.x;
+  var py = player.y + player.h/2 - cam.y;
+  var inner = 34;
+  var outer = Math.max(viewW, viewH)*0.5;
+  if (outer<=inner) outer = inner+1;
+  var g = ctx.createRadialGradient(px,py,inner, px,py,outer);
+  var col = '3,5,10,';
+  g.addColorStop(0, 'rgba('+col+'0)');
+  g.addColorStop(0.25, 'rgba('+col+(maxA*0.3).toFixed(3)+')');
+  g.addColorStop(1, 'rgba('+col+maxA.toFixed(3)+')');
+  ctx.fillStyle = g;
+  ctx.fillRect(0,0,viewW,viewH);
+}
+function resize(){
+  dpr = Math.min(2, window.devicePixelRatio||1);
+  viewW = window.innerWidth || document.documentElement.clientWidth || 360;
+  viewH = window.innerHeight || document.documentElement.clientHeight || 640;
+  canvas.width = Math.floor(viewW*dpr); canvas.height = Math.floor(viewH*dpr);
+  canvas.style.width = viewW+'px'; canvas.style.height = viewH+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+window.addEventListener('resize', resize);
+window.addEventListener('orientationchange', resize);
+window.addEventListener('load', resize);
+resize(); cam.x = player.x-viewW/2; cam.y = player.y-viewH/2; updateHud();
+
+var saveTimer = 0;
+function loop(now){
+  var dt = Math.min(0.05, (now-last)/1000 || 0.016); last = now;
+  update(dt); render();
+  saveTimer += dt; if (saveTimer>5){ saveTimer=0; saveGame(); }
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(function(t){ last=t; requestAnimationFrame(loop); });
+})();
+</script>
+</body>
+</html>

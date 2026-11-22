@@ -9,6 +9,15 @@
 
   function errorBox() { return document.getElementById('auth-error'); }
   function button(id) { return document.getElementById(id); }
+  function nextUrl() {
+    var match = /[?&]next=([^&]+)/.exec(window.location.search || '');
+    if (!match) return 'profile.html';
+    try {
+      var value = decodeURIComponent(match[1]);
+      if (value.indexOf('/') === 0 && value.indexOf('//') !== 0) return value;
+    } catch (e) {}
+    return 'profile.html';
+  }
 
   function setLoading(id, loading, label) {
     var b = button(id);
@@ -33,7 +42,7 @@
       };
       auth.register(values)
         .then(function () { return auth.login({ username: values.username, password: values.password }); })
-        .then(function () { window.location.href = 'profile.html'; })
+        .then(function () { window.location.href = nextUrl(); })
         .catch(function (e) { showError(e && e.message ? e.message : 'Registration failed.'); })
         .then(function () { setLoading('reg-submit', false, 'Create account'); });
     });
@@ -48,7 +57,7 @@
         password: document.getElementById('login-password').value
       };
       auth.login(values)
-        .then(function () { window.location.href = 'profile.html'; })
+        .then(function () { window.location.href = nextUrl(); })
         .catch(function (e) { showError(e && e.message ? e.message : 'Login failed.'); })
         .then(function () { setLoading('login-submit', false, 'Log in'); });
     });

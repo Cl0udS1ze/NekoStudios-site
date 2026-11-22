@@ -49,7 +49,8 @@
     'news': { ru: 'Новости', en: 'News' },
     'contact': { ru: 'Контакты', en: 'Contact' },
     'bug_reports': { ru: 'Сообщить об ошибке', en: 'Bug Reports' },
-    'channel': { ru: 'Канал', en: 'Channel' }
+    'channel': { ru: 'Канал', en: 'Channel' },
+    'play_browser': { ru: 'Играть в браузере', en: 'Play in browser' }
   };
 
   // Fallback for UI strings that were written directly in templates.

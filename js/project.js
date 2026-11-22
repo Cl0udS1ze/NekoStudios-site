@@ -6,6 +6,7 @@
   var ui = window.NekoUI;
   var components = window.NekoComponents;
   var mount = document.getElementById('detail-content');
+  function tr(key) { return window.NekoI18n ? window.NekoI18n.t(key) : key; }
   if (!repo || !components || !mount) return;
 
   var match = /[?&]id=([^&]+)/.exec(window.location.search || '');
@@ -41,6 +42,9 @@
       return '<span>' + components.escapeHtml(tag) + '</span>';
     }).join('');
     document.title = project.title + ' — NekoStudios';
+    var playButton = project.slug === 'deep-mine'
+      ? '<a class="btn btn--primary" href="projects/deep-mine/">' + tr('play_browser') + '</a>'
+      : '';
 
     var versions = meta.versions
       ? '<section class="versions-panel" aria-labelledby="versions-title">' +
@@ -69,6 +73,7 @@
             '<h2>Overview</h2>' +
             '<p>' + components.escapeHtml(project.description) + '</p>' +
             '<div class="detail-note">' + components.escapeHtml(project.note) + '</div>' +
+            playButton +
             '<div class="detail-tags">' + tags + '</div>' +
           '</div>' +
         '</div>' +

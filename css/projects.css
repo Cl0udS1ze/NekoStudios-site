@@ -106,6 +106,7 @@
   background: var(--surface);
 }
 .detail-panel h2 { font-size: 1.4rem; margin-bottom: var(--space-2); }
+.detail-panel .btn { margin-top: var(--space-3); }
 .detail-note {
   margin-top: var(--space-3);
   padding: var(--space-3);
