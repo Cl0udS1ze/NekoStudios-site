@@ -16,34 +16,39 @@
   #c { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
   #hud {
     position: absolute; top: 0; left: 0; right: 0; z-index: 5;
-    display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
-    padding: calc(env(safe-area-inset-top, 0px) + 8px) 96px 8px 112px;
-    background: linear-gradient(180deg, rgba(6,9,14,.92), rgba(6,9,14,.55) 70%, transparent);
-    pointer-events: none; font-size: 13px;
+    display: flex; flex-direction: column; gap: 6px;
+    padding: calc(env(safe-area-inset-top, 0px) + 8px) 10px 8px;
+    background: linear-gradient(180deg, rgba(6,9,14,.94), rgba(6,9,14,.6) 70%, transparent);
+    pointer-events: none; font-size: 14px;
   }
-  .res { display: flex; align-items: center; gap: 5px; padding: 4px 8px;
-    background: rgba(20,27,36,.85); border: 1px solid rgba(255,255,255,.12);
-    border-radius: 8px; font-variant-numeric: tabular-nums; }
-  .sw { width: 12px; height: 12px; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.5); }
+  .hud-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; }
+  .hud-top-center { display: flex; align-items: center; justify-content: center; gap: 6px; flex: 1; min-width: 0; }
+  .hud-resources {
+    display: flex; flex-wrap: nowrap; gap: 6px; align-items: center;
+    width: 100%; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none;
+  }
+  .hud-resources::-webkit-scrollbar { display: none; }
+  .res { display: flex; align-items: center; gap: 6px; padding: 5px 10px;
+    background: rgba(20,27,36,.9); border: 1px solid rgba(255,255,255,.14);
+    border-radius: 9px; font-variant-numeric: tabular-nums; font-size: 13px;
+    white-space: nowrap; flex: none; }
+  .sw { width: 13px; height: 13px; border-radius: 3px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.5); }
   .s-coal{background:#3a3f48}.s-iron{background:#c9a07a}.s-gold{background:#f2c14e}.s-diamond{background:#5fe0d8}
   .s-coin{background:#ffd166;border-radius:50%}
-  #depth { margin-left: auto; padding: 4px 9px; background: rgba(20,27,36,.85);
-    border: 1px solid rgba(255,255,255,.12); border-radius: 8px; color: #ffd166; }
-  #homeBtn { pointer-events: auto; z-index: 7; position: absolute;
-    top: calc(env(safe-area-inset-top, 0px) + 8px); left: 8px;
-    padding: 7px 11px; font-size: 12px; color: #d9ccff; text-decoration: none;
-    background: rgba(76,29,149,.85); border: 1px solid rgba(196,181,253,.45);
-    border-radius: 8px; }
-  #saveStatus { pointer-events: none; font-size: 11px; color: #b9c6d3; }
+  #depth { padding: 5px 10px; background: rgba(20,27,36,.9);
+    border: 1px solid rgba(255,255,255,.14); border-radius: 9px; color: #ffd166; white-space: nowrap; flex: none; }
+  #homeBtn { pointer-events: auto; padding: 9px 13px; font-size: 13px; color: #d9ccff; text-decoration: none;
+    background: rgba(76,29,149,.9); border: 1px solid rgba(196,181,253,.5);
+    border-radius: 9px; white-space: nowrap; }
+  #saveStatus { pointer-events: none; font-size: 12px; color: #b9c6d3; white-space: nowrap; flex: none; }
   #saveStatus.saving { color: #ffd166; }
   #saveStatus.error { color: #ff9b9b; }
-  #loginLink { pointer-events: auto; display: none; font-size: 11px; color: #c4b5fd;
-    text-decoration: underline; }
+  #loginLink { pointer-events: auto; display: none; font-size: 12px; color: #c4b5fd;
+    text-decoration: underline; white-space: nowrap; flex: none; }
   #loginLink.show { display: inline; }
-  #newGame { pointer-events: auto; z-index: 6; position: absolute;
-    top: calc(env(safe-area-inset-top, 0px) + 8px); right: 8px;
-    padding: 7px 11px; font-size: 12px; color: #ffd7d2; background: rgba(120,40,36,.85);
-    border: 1px solid rgba(255,255,255,.2); border-radius: 8px; }
+  #newGame { pointer-events: auto; padding: 9px 13px; font-size: 13px; color: #ffd7d2;
+    background: rgba(120,40,36,.9); border: 1px solid rgba(255,255,255,.22);
+    border-radius: 9px; white-space: nowrap; }
   #controls {
     position: absolute; left: 0; right: 0; bottom: 0; z-index: 5;
     display: flex; justify-content: space-between; align-items: flex-end;
@@ -101,12 +106,11 @@
     .u,.l{top:0;left:0}.u{left:44px}.d{bottom:0;left:44px}.l{top:44px;left:0}.r{top:44px;right:0}
     #digBtn{width:60px;height:60px;left:35px;top:35px;font-size:11px} }
   @media (orientation: landscape) and (max-height: 560px) {
-    #hud { font-size: 11px; gap: 4px;
-      padding: calc(env(safe-area-inset-top, 0px) + 4px) 84px 4px 104px; }
-    #homeBtn { top: calc(env(safe-area-inset-top, 0px) + 4px); left: 6px; padding: 5px 8px; font-size: 11px; }
-    .res { padding: 2px 6px; } #depth { padding: 2px 6px; }
-    #newGame { top: calc(env(safe-area-inset-top, 0px) + 4px); right: 6px;
-      padding: 5px 8px; font-size: 11px; }
+    #hud { font-size: 12px; gap: 4px;
+      padding: calc(env(safe-area-inset-top, 0px) + 4px) 8px 4px; }
+    #homeBtn, #newGame { padding: 6px 9px; font-size: 11px; }
+    .res, #depth { padding: 3px 7px; font-size: 11px; }
+    #saveStatus, #loginLink { font-size: 10px; }
     #controls { padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 6px); }
     .pad { width: 120px; height: 120px; } .btn { width: 40px; height: 40px; font-size: 18px; }
     .u{top:0;left:40px}.d{bottom:0;left:40px}.l{top:40px;left:0}.r{top:40px;right:0}
@@ -120,20 +124,26 @@
 </head>
 <body>
 <canvas id="c"></canvas>
-<a id="homeBtn" href="../../index.html">На главную</a>
 <div id="hud">
-  <div class="res"><span class="sw s-coal"></span>Уголь <b id="nCoal">0</b></div>
-  <div class="res"><span class="sw s-iron"></span>Железо <b id="nIron">0</b></div>
-  <div class="res"><span class="sw s-gold"></span>Золото <b id="nGold">0</b></div>
-  <div class="res"><span class="sw s-diamond"></span>Алмазы <b id="nDia">0</b></div>
-  <div class="res"><span class="sw s-coin"></span>Монеты <b id="nCoins">0</b></div>
-  <div class="res">Рюкзак <b id="nBag">0 / 20</b></div>
-  <div class="res">Кирка: <b id="nPick">Деревянная</b></div>
-  <div id="depth">Глубина 0 м</div>
-  <span id="saveStatus">Локальное сохранение</span>
-  <a id="loginLink" href="../../login.html?next=/projects/deep-mine/">Войти в Neko ID</a>
+  <div class="hud-top">
+    <a id="homeBtn" href="../../index.html">На главную</a>
+    <div class="hud-top-center">
+      <span class="res">Рюкзак <b id="nBag">0 / 20</b></span>
+      <span class="res">Кирка: <b id="nPick">Деревянная</b></span>
+    </div>
+    <button id="newGame">Новый мир</button>
+  </div>
+  <div class="hud-resources">
+    <span class="res"><span class="sw s-coal"></span>Уголь <b id="nCoal">0</b></span>
+    <span class="res"><span class="sw s-iron"></span>Железо <b id="nIron">0</b></span>
+    <span class="res"><span class="sw s-gold"></span>Золото <b id="nGold">0</b></span>
+    <span class="res"><span class="sw s-diamond"></span>Алмазы <b id="nDia">0</b></span>
+    <span class="res"><span class="sw s-coin"></span>Монеты <b id="nCoins">0</b></span>
+    <span id="depth">Глубина 0 м</span>
+    <span id="saveStatus">Локальное сохранение</span>
+    <a id="loginLink" href="../../login.html?next=/projects/deep-mine/">Войти в Neko ID</a>
+  </div>
 </div>
-<button id="newGame">Новая игра</button>
 <button id="interact">Продать руду</button>
 <div id="toast"></div><div id="err"></div>
 <div id="modal"><div id="panel">
@@ -168,6 +178,9 @@ window.addEventListener('error', function(e){
 
 // ---------- constants ----------
 var W = 100, H = 150, TILE = 32;
+var ZOOM = 1.55; // визуальное приближение камеры, физика мира не меняется
+function visibleW(){ return viewW / ZOOM; }
+function visibleH(){ return viewH / ZOOM; }
 var AIR=0, DIRT=1, STONE=2, COAL=3, IRON=4, GOLD=5, DIAMOND=6;
 var COLORS = {};
 COLORS[DIRT]   = ['#6b4a32','#7d583b','#5a3d29'];
@@ -361,7 +374,7 @@ function newGame(){
   res = {coal:0,iron:0,gold:0,diamond:0};
   coins = 0; pickIdx = 0; bagIdx = 0;
   player.x = 48*TILE+4; player.y = 6*TILE+2;
-  cam.x = player.x - viewW/2; cam.y = player.y - viewH/2;
+  cam.x = player.x - visibleW()/2; cam.y = player.y - visibleH()/2;
   digProgress = 0; digTarget = null;
   saveGame(); updateHud();
 }
@@ -377,7 +390,7 @@ if (!loadGame()){
 } else {
   player.x = loadedPos.x; player.y = loadedPos.y;
 }
-cam.x = player.x - viewW/2; cam.y = player.y - viewH/2;
+cam.x = player.x - visibleW()/2; cam.y = player.y - visibleH()/2;
 
 // ---------- input ----------
 function bindPad(sel, state, key){
@@ -711,12 +724,12 @@ function update(dt){
   }
 
   // camera (smooth, clamped)
-  var targetX = player.x + player.w/2 - viewW/2;
-  var targetY = player.y + player.h/2 - viewH/2;
+  var targetX = player.x + player.w/2 - visibleW()/2;
+  var targetY = player.y + player.h/2 - visibleH()/2;
   var k = Math.min(1, dt*7);
   cam.x += (targetX-cam.x)*k; cam.y += (targetY-cam.y)*k;
-  if (W*TILE <= viewW) cam.x = (W*TILE-viewW)/2; else cam.x = clamp(cam.x,0,W*TILE-viewW);
-  if (H*TILE <= viewH) cam.y = (H*TILE-viewH)/2; else cam.y = clamp(cam.y,0,H*TILE-viewH);
+  if (W*TILE <= visibleW()) cam.x = (W*TILE-visibleW())/2; else cam.x = clamp(cam.x,0,W*TILE-visibleW());
+  if (H*TILE <= visibleH()) cam.y = (H*TILE-visibleH())/2; else cam.y = clamp(cam.y,0,H*TILE-visibleH());
   updateInteract();
   // Глубина обновляется каждый кадр по положению игрока, а не только при добыче.
   var dep = Math.max(0, Math.floor(player.y/TILE - 5));
@@ -821,11 +834,13 @@ function drawShops(){
   }
 }
 function render(){
+  ctx.setTransform(dpr,0,0,dpr,0,0);
   ctx.fillStyle='#0a0d13'; ctx.fillRect(0,0,viewW,viewH);
+  ctx.setTransform(dpr*ZOOM,0,0,dpr*ZOOM,0,0);
   var x0 = Math.max(0, Math.floor(cam.x/TILE));
   var y0 = Math.max(0, Math.floor(cam.y/TILE));
-  var x1 = Math.min(W-1, Math.ceil((cam.x+viewW)/TILE));
-  var y1 = Math.min(H-1, Math.ceil((cam.y+viewH)/TILE));
+  var x1 = Math.min(W-1, Math.ceil((cam.x+visibleW())/TILE));
+  var y1 = Math.min(H-1, Math.ceil((cam.y+visibleH())/TILE));
   for (var ty=y0;ty<=y1;ty++){
     for (var tx=x0;tx<=x1;tx++){
       var t = world[ty*W+tx]; // настоящий тип блока — данные мира не меняем
@@ -864,7 +879,7 @@ function drawDarkness(){
   var px = player.x + player.w/2 - cam.x;
   var py = player.y + player.h/2 - cam.y;
   var inner = 34;
-  var outer = Math.max(viewW, viewH)*0.5;
+  var outer = Math.max(visibleW(), visibleH())*0.5;
   if (outer<=inner) outer = inner+1;
   var g = ctx.createRadialGradient(px,py,inner, px,py,outer);
   var col = '3,5,10,';
@@ -872,7 +887,7 @@ function drawDarkness(){
   g.addColorStop(0.25, 'rgba('+col+(maxA*0.3).toFixed(3)+')');
   g.addColorStop(1, 'rgba('+col+maxA.toFixed(3)+')');
   ctx.fillStyle = g;
-  ctx.fillRect(0,0,viewW,viewH);
+  ctx.fillRect(cam.x-2, cam.y-2, visibleW()+4, visibleH()+4);
 }
 function resize(){
   dpr = Math.min(2, window.devicePixelRatio||1);
@@ -885,7 +900,7 @@ function resize(){
 window.addEventListener('resize', resize);
 window.addEventListener('orientationchange', resize);
 window.addEventListener('load', resize);
-resize(); cam.x = player.x-viewW/2; cam.y = player.y-viewH/2; updateHud();
+resize(); cam.x = player.x-visibleW()/2; cam.y = player.y-visibleH()/2; updateHud();
 
 function applyCloudSave(save){
   if (!save) return;
@@ -894,7 +909,7 @@ function applyCloudSave(save){
     coins:save.coins, pick:save.pick, bag:save.bag };
   if (!applySave(d)) return;
   player.x = loadedPos.x; player.y = loadedPos.y;
-  cam.x = player.x-viewW/2; cam.y = player.y-viewH/2;
+  cam.x = player.x-visibleW()/2; cam.y = player.y-visibleH()/2;
   updateHud();
   lastProgressSig = JSON.stringify(currentPayload());
   setSaveStatus('Сохранено в Neko ID');
