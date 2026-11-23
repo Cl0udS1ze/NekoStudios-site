@@ -11,9 +11,7 @@
       var value = s[node.getAttribute('data-setting-key')];
       if (value) node.textContent = value;
     });
-    var i18n = window.NekoI18n;
-    var saved = null;
-    try { saved = window.localStorage.getItem('neko_lang'); } catch (e) {}
-    if (i18n && !saved && s.default_language) i18n.apply(s.default_language);
+    // Language is a visitor choice: Russian by default, restored from
+    // localStorage by i18n.js. The site setting must not override it.
   }).catch(function () {});
 })();

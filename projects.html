@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Projects by NekoStudios — games, software and experimental technology.">
+<meta name="description" content="Проекты NekoStudios — игры, программы и экспериментальные технологии.">
 <meta name="theme-color" content="#07090f">
-<title>Projects — NekoStudios</title>
+<title>Проекты — NekoStudios</title>
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/layout.css">
@@ -26,38 +26,38 @@
 <script src="js/projects.js" defer></script>
 </head>
 <body data-page="projects">
-<a class="skip-link" href="#content">Skip to content</a>
+<a class="skip-link" href="#content" data-i18n="skip">Перейти к содержимому</a>
 
 <div data-site-header data-active="projects" data-base="index.html"></div>
 
 <main id="content">
   <section class="page-hero" aria-labelledby="projects-page-title">
     <div class="container">
-      <p class="eyebrow">Catalog</p>
-      <h1 id="projects-page-title">Our Projects</h1>
-      <p class="page-subtitle">Games, software and experimental technology — built from ideas and developed with imagination.</p>
-      <p class="page-support">Explore the worlds, tools and systems currently being created at NekoStudios.</p>
+      <p class="eyebrow" data-i18n="projects_eyebrow">Каталог</p>
+      <h1 id="projects-page-title" data-i18n="projects_title">Наши проекты</h1>
+      <p class="page-subtitle" data-i18n="projects_subtitle">Игры, программы и экспериментальные технологии — созданные из идей и разработанные с воображением.</p>
+      <p class="page-support" data-i18n="projects_support">Миры, инструменты и системы, которые сейчас создаются в NekoStudios.</p>
     </div>
   </section>
 
-  <section class="section catalog" id="catalog" aria-label="Project catalog">
+  <section class="section catalog" id="catalog" aria-label="Project catalog" data-i18n-aria="projects_catalog_label">
     <div class="container">
       <div class="catalog-toolbar">
-        <div class="filter-bar" id="project-filters" role="group" aria-label="Filter projects">
-          <button type="button" class="filter-btn is-active" data-filter="all" aria-pressed="true">All Projects</button>
-          <button type="button" class="filter-btn" data-filter="games" aria-pressed="false">Games</button>
-          <button type="button" class="filter-btn" data-filter="software" aria-pressed="false">Software</button>
-          <button type="button" class="filter-btn" data-filter="ai-research" aria-pressed="false">AI &amp; Research</button>
+        <div class="filter-bar" id="project-filters" role="group" aria-label="Filter projects" data-i18n-aria="filter_projects_label">
+          <button type="button" class="filter-btn is-active" data-filter="all" aria-pressed="true" data-i18n="filter_all">Все проекты</button>
+          <button type="button" class="filter-btn" data-filter="games" aria-pressed="false" data-i18n="filter_games">Игры</button>
+          <button type="button" class="filter-btn" data-filter="software" aria-pressed="false" data-i18n="filter_software">Софт</button>
+          <button type="button" class="filter-btn" data-filter="ai-research" aria-pressed="false" data-i18n="filter_ai">AI и исследования</button>
         </div>
         <label class="search-field">
-          <span class="sr-only">Search projects</span>
-          <input id="project-search" type="search" placeholder="Search projects" autocomplete="off">
+          <span class="sr-only" data-i18n="projects_search">Поиск проектов</span>
+          <input id="project-search" type="search" placeholder="Поиск проектов" autocomplete="off" data-i18n-placeholder="projects_search">
         </label>
       </div>
 
       <div class="project-grid" id="project-grid"></div>
       <div class="empty-state" id="catalog-empty" hidden></div>
-      <noscript><p class="notice">Enable JavaScript to view the project catalog.</p></noscript>
+      <noscript><p class="notice" data-i18n="projects_js_notice">Включите JavaScript, чтобы увидеть каталог проектов.</p></noscript>
     </div>
   </section>
 </main>

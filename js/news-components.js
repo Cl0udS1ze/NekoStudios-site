@@ -12,6 +12,9 @@
         });
   }
 
+  function t(key) { return window.NekoI18n ? window.NekoI18n.t(key) : key; }
+  function content(value) { return window.NekoI18n ? window.NekoI18n.content(value) : value; }
+
   // Minimal inline formatting: **bold**, ==highlight==, [text](internal-url).
   // HTML is escaped first; only known internal link prefixes survive.
   function inline(text) {
@@ -49,11 +52,16 @@
   }
 
   function postDate(post) {
-    return post.date ? escapeHtml(post.date) : escapeHtml(post.dateLabel || 'Demo material');
+    if (post.date) {
+      return escapeHtml(window.NekoI18n ? window.NekoI18n.formatDate(post.date) : post.date);
+    }
+    return escapeHtml(post.dateLabel === 'Demo material' ? t('news_demo_material') : (post.dateLabel || t('news_demo_material')));
   }
 
   function badge(post) {
-    var label = post.demo ? 'Draft · Demo material' : (post.status === 'published' ? 'Published' : 'Draft');
+    var label = post.demo
+      ? t('news_draft_demo')
+      : (post.status === 'published' ? t('news_published') : t('news_draft'));
     return '<span class="news-badge">' + escapeHtml(label) + '</span>';
   }
 
@@ -61,7 +69,8 @@
     var href = 'article.html?slug=' + encodeURIComponent(post.slug);
     var repo = window.NekoRepository;
     var category = repo ? repo.categoryLabel(post.category) : 'News';
-    var searchText = [post.title, post.excerpt, category]
+    var categoryLabel = content(category);
+    var searchText = [post.title, post.excerpt, category, categoryLabel]
       .concat((post.body || []).map(function (b) {
         return (b.text || '') + ' ' + (b.items || []).join(' ') + ' ' + (b.caption || '');
       })).join(' ').toLowerCase();
@@ -71,13 +80,14 @@
         '" data-post="' + escapeHtml(post.id) + '" data-category="' + escapeHtml(post.category) +
         '" data-search="' + escapeHtml(searchText) + '">' +
         '<a class="news-card-cover art--' + escapeHtml(post.cover || 'studio') + '" href="' + href +
-          '" aria-label="Read ' + escapeHtml(post.title) + '">' + badge(post) + '</a>' +
+          '" aria-label="' + escapeHtml(t('news_read') + ': ' + post.title) + '">' + badge(post) + '</a>' +
         '<div class="news-card-body">' +
-          '<div class="news-meta"><span class="news-category">' + escapeHtml(category) + '</span>' +
+          '<div class="news-meta"><span class="news-category">' + escapeHtml(categoryLabel) + '</span>' +
             '<span class="news-date">' + postDate(post) + '</span></div>' +
           '<h3><a href="' + href + '">' + escapeHtml(post.title) + '</a></h3>' +
           '<p>' + escapeHtml(post.excerpt) + '</p>' +
-          '<a class="news-read" href="' + href + '">Read article <span aria-hidden="true">→</span></a>' +
+          '<a class="news-read" href="' + href + '">' + escapeHtml(t('news_read')) +
+            ' <span aria-hidden="true">→</span></a>' +
         '</div>' +
       '</article>';
   }

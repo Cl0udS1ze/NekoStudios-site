@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="NekoStudios Team">
+<meta name="description" content="Команда NekoStudios — люди, которые создают игры, инструменты и экспериментируют с технологиями.">
 <meta name="theme-color" content="#07090f">
-<title>NekoStudios Team</title>
+<title>Команда — NekoStudios</title>
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/layout.css">
 <link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/projects.css">
 <link rel="stylesheet" href="css/team.css">
 <script src="js/site.js" defer></script>
 <script src="js/config.js" defer></script>
@@ -20,16 +21,25 @@
 <script src="js/team.js" defer></script>
 </head>
 <body data-page="team">
-<a class="skip-link" href="#content">Skip to content</a>
-<div data-site-header data-active="none" data-base="index.html"></div>
+<a class="skip-link" href="#content" data-i18n="skip">Перейти к содержимому</a>
+
+<div data-site-header data-active="team" data-base="index.html"></div>
+
 <main id="content">
-  <section class="page-hero"><div class="container">
-    <p class="eyebrow">People behind the projects</p>
-    <h1 data-i18n="team_title">NekoStudios Team</h1>
-    <p class="page-support" data-i18n="no_members" hidden></p>
-  </div></section>
-  <section class="section catalog"><div class="container" id="team-grid"></div></section>
+  <section class="page-hero" aria-labelledby="team-title">
+    <div class="container">
+      <p class="eyebrow" data-i18n="team_eyebrow">Люди за проектами</p>
+      <h1 id="team-title" data-i18n="team_title">Команда NekoStudios</h1>
+      <p class="page-subtitle" data-i18n="team_subtitle">Небольшая команда, которая создаёт игры, инструменты и экспериментирует с технологиями.</p>
+      <p class="page-support" data-i18n="team_support">Состав команды ведётся через Neko ID. Профиль открывается по карточке участника.</p>
+    </div>
+  </section>
+
+  <section class="section catalog" aria-label="Team roster" data-i18n-aria="team_roster_label">
+    <div class="container" id="team-grid"></div>
+  </section>
 </main>
-<div data-site-footer data-active="none" data-base="index.html"></div>
+
+<div data-site-footer data-active="team" data-base="index.html"></div>
 </body>
 </html>

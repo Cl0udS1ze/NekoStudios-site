@@ -20,7 +20,7 @@
         '<div id="reviews-summary">' + ui.loading() + '</div>' +
         '<div id="reviews-form-root"></div>' +
         '<div class="reviews-toolbar"><select id="reviews-sort">' +
-          '<option value="new">' + tr('no_reviews') + ' ↓</option>' +
+          '<option value="new">' + tr('reviews_new') + '</option>' +
           '<option value="high">★ ↓</option><option value="low">★ ↑</option>' +
         '</select></div>' +
         '<div id="reviews-list">' + ui.loading() + '</div>' +

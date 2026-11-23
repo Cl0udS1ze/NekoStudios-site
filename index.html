@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="NekoStudios — independent game and software studio. We create games, software and experimental AI systems. Small studio. Big worlds.">
+<meta name="description" content="NekoStudios — независимая игровая и программная студия. Мы создаём игры, программы и экспериментальные AI-системы. Маленькая студия. Большие миры.">
 <meta name="theme-color" content="#07090f">
-<title>NekoStudios — Small studio. Big worlds.</title>
+<title>NekoStudios — Маленькая студия. Большие миры.</title>
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/layout.css">
@@ -26,7 +26,7 @@
 <script src="js/main.js" defer></script>
 </head>
 <body data-page="home">
-<a class="skip-link" href="#content">Skip to content</a>
+<a class="skip-link" href="#content" data-i18n="skip">Перейти к содержимому</a>
 
 <div data-site-header data-active="home"></div>
 
@@ -35,13 +35,13 @@
     <div class="hero-glow" aria-hidden="true"></div>
     <div class="container hero-inner">
       <div class="hero-copy">
-        <p class="eyebrow">Independent Game &amp; Software Studio</p>
+        <p class="eyebrow" data-i18n="home_eyebrow">Независимая игровая и программная студия</p>
         <h1 id="hero-title">NekoStudios</h1>
-        <p class="hero-lead">We build interactive worlds, useful digital tools and experimental AI systems.</p>
-        <p class="hero-slogan" data-setting-key="site_slogan">Small studio. Big worlds.</p>
+        <p class="hero-lead" data-i18n="home_lead">Мы создаём интерактивные миры, полезные цифровые инструменты и экспериментальные AI-системы.</p>
+        <p class="hero-slogan" data-i18n="site_slogan">Маленькая студия. Большие миры.</p>
         <div class="hero-actions">
-          <a class="btn btn--primary" href="#projects">Explore our projects</a>
-          <a class="btn btn--ghost" href="#about">About the studio</a>
+          <a class="btn btn--primary" href="#projects" data-i18n="home_cta_projects">Смотреть проекты</a>
+          <a class="btn btn--ghost" href="#about" data-i18n="home_cta_about">О студии</a>
         </div>
       </div>
       <div class="hero-art" aria-hidden="true">
@@ -50,20 +50,42 @@
         <div class="world-core"><span></span><span></span><span></span><span></span></div>
         <div class="artifact artifact--one"></div>
         <div class="artifact artifact--two"></div>
-        <div class="hero-caption"> Ideas&nbsp; → &nbsp;Worlds </div>
+        <div class="hero-caption" data-i18n="home_caption">Идеи&nbsp; → &nbsp;Миры</div>
       </div>
     </div>
-    <div class="container scroll-hint" aria-hidden="true"><span></span> scroll to explore</div>
+    <div class="container scroll-hint" aria-hidden="true"><span></span><span class="scroll-hint-text" data-i18n="home_scroll">листайте вниз</span></div>
+  </section>
+
+  <section class="section featured" id="featured" aria-labelledby="featured-title">
+    <div class="container">
+      <article class="featured-card" id="featured-project">
+        <div class="featured-art art--mine" id="featured-art" aria-hidden="true">
+          <span class="featured-index">01</span>
+        </div>
+        <div class="featured-copy">
+          <p class="eyebrow" data-i18n="home_featured_eyebrow">Главный проект студии</p>
+          <div class="featured-title-row">
+            <h2 id="featured-title">DEEP MINE</h2>
+            <span class="featured-badge" id="featured-meta">Игра · В разработке</span>
+          </div>
+          <p class="featured-lead" id="featured-description">2D-игра про добычу полезных ископаемых в разработке. Пробивайтесь сквозь пласты, находите ресурсы и улучшайте снаряжение.</p>
+          <div class="featured-actions">
+            <a class="btn btn--primary" id="featured-link" href="project.html?id=deep-mine" data-i18n="home_featured_open">Открыть проект</a>
+            <a class="btn btn--ghost" id="featured-play" href="projects/deep-mine/" data-i18n="play_browser">Играть в браузере</a>
+          </div>
+        </div>
+      </article>
+    </div>
   </section>
 
   <section class="section home-news" id="news" aria-labelledby="home-news-title">
     <div class="container">
       <div class="section-head">
         <div>
-          <p class="eyebrow">From the devlog</p>
-          <h2 id="home-news-title">News &amp; Devlog</h2>
+          <p class="eyebrow" data-i18n="home_news_eyebrow">Из devlog</p>
+          <h2 id="home-news-title" data-i18n="home_news_title">Новости и devlog</h2>
         </div>
-        <p class="section-intro"><a href="news.html">Все публикации →</a></p>
+        <p class="section-intro"><a href="news.html" data-i18n="home_news_all">Все публикации →</a></p>
       </div>
       <div class="news-preview" id="home-news-grid"></div>
     </div>
@@ -73,22 +95,22 @@
     <div class="container">
       <div class="section-head">
         <div>
-          <p class="eyebrow">What we are building</p>
-          <h2 id="projects-title">Featured Projects</h2>
+          <p class="eyebrow" data-i18n="home_projects_eyebrow">Что мы создаём</p>
+          <h2 id="projects-title" data-i18n="home_projects_title">Избранные проекты</h2>
         </div>
-        <p class="section-intro">Explore the worlds, tools and ideas currently being developed at NekoStudios.</p>
+        <p class="section-intro" data-i18n="home_projects_intro">Миры, инструменты и идеи, которые сейчас разрабатываются в NekoStudios.</p>
       </div>
       <!-- Local filters over the same project data; no backend on this stage. -->
       <div class="filter-bar" id="project-filters" role="group" aria-label="Filter projects">
-        <button type="button" class="filter-btn is-active" data-filter="all" aria-pressed="true">All Projects</button>
-        <button type="button" class="filter-btn" data-filter="games" aria-pressed="false">Games</button>
-        <button type="button" class="filter-btn" data-filter="software" aria-pressed="false">Software</button>
-        <button type="button" class="filter-btn" data-filter="ai-research" aria-pressed="false">AI &amp; Research</button>
+        <button type="button" class="filter-btn is-active" data-filter="all" aria-pressed="true" data-i18n="filter_all">Все проекты</button>
+        <button type="button" class="filter-btn" data-filter="games" aria-pressed="false" data-i18n="filter_games">Игры</button>
+        <button type="button" class="filter-btn" data-filter="software" aria-pressed="false" data-i18n="filter_software">Софт</button>
+        <button type="button" class="filter-btn" data-filter="ai-research" aria-pressed="false" data-i18n="filter_ai">AI и исследования</button>
       </div>
       <!-- Project cards are rendered from js/data.js so a future API can supply the same shape. -->
       <div class="project-grid" id="project-grid"></div>
       <noscript>
-        <p class="notice">Enable JavaScript to view the project list.</p>
+        <p class="notice" data-i18n="projects_js_notice">Включите JavaScript, чтобы увидеть каталог проектов.</p>
       </noscript>
     </div>
   </section>
@@ -97,15 +119,15 @@
     <div class="container about-inner">
       <div class="about-aside" aria-hidden="true">
         <div class="about-symbol"><span></span><span></span><span></span></div>
-        <p class="about-aside-label">Independent by design</p>
+        <p class="about-aside-label" data-i18n="home_about_label">Независимость как принцип</p>
       </div>
       <div class="about-content">
-        <p class="eyebrow">About the studio</p>
-        <h2 id="about-title">Built from ideas. Driven by imagination.</h2>
+        <p class="eyebrow" data-i18n="home_about_eyebrow">О студии</p>
+        <h2 id="about-title" data-i18n="home_about_title">Создано из идей. Ведомо воображением.</h2>
         <div class="about-text">
-          <p>NekoStudios is an independent studio creating games, software and experimental AI systems.</p>
-          <p>We build interactive worlds, develop useful digital tools and explore new ideas through technology.</p>
-          <p>Our software projects include experimental utilities and the AI system NEIRON, which is being built from the ground up and is still in development.</p>
+          <p data-i18n="home_about_p1">NekoStudios — независимая студия, создающая игры, программы и экспериментальные AI-системы.</p>
+          <p data-i18n="home_about_p2">Мы строим интерактивные миры, разрабатываем полезные цифровые инструменты и исследуем новые идеи через технологии.</p>
+          <p data-i18n="home_about_p3">Среди наших программных проектов — экспериментальные утилиты и AI-система NEIRON, которая создаётся с нуля и всё ещё находится в разработке.</p>
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@
   var repo = window.NekoRepository;
   var ui = window.NekoUI;
   var views = window.NekoNewsComponents;
+  var i18n = window.NekoI18n;
   var filterBar = document.getElementById('news-filters');
   var search = document.getElementById('news-search');
   var featured = document.getElementById('news-featured');
@@ -15,8 +16,12 @@
   var posts = [];
   var state = { category: 'all', query: '' };
 
+  function t(key) { return i18n ? i18n.t(key) : key; }
+  function esc(value) { return views.escapeHtml(value); }
+
   function searchText(post) {
-    return [post.title, post.excerpt, repo.categoryLabel(post.category)]
+    var category = repo.categoryLabel(post.category);
+    return [post.title, post.excerpt, category, i18n ? i18n.content(category) : category]
       .concat((post.body || []).map(function (block) {
         return (block.text || '') + ' ' + (block.items || []).join(' ') + ' ' + (block.caption || '');
       })).join(' ').toLowerCase();
@@ -56,9 +61,9 @@
       empty.innerHTML = '';
     } else {
       empty.hidden = false;
-      empty.innerHTML = '<h3>Публикации не найдены.</h3>' +
-        '<p>Попробуйте другой запрос или вернитесь ко всем новостям.</p>' +
-        '<button type="button" class="btn btn--ghost" data-reset>Сбросить фильтры</button>';
+      empty.innerHTML = '<h3>' + esc(t('news_empty_title')) + '</h3>' +
+        '<p>' + esc(t('news_empty_text')) + '</p>' +
+        '<button type="button" class="btn btn--ghost" data-reset>' + esc(t('news_reset')) + '</button>';
     }
     markButtons();
   }
@@ -92,6 +97,12 @@
     featured.innerHTML = '';
     grid.innerHTML = '';
     empty.hidden = false;
-    empty.innerHTML = ui ? ui.error('Publications could not be loaded.') : '';
+    empty.innerHTML = ui ? ui.error(t('news_load_error')) : '';
   });
+
+  if (i18n && i18n.onChange) {
+    i18n.onChange(function () {
+      if (posts.length) render();
+    });
+  }
 })();

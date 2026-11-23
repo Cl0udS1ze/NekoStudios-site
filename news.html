@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="News and devlog from NekoStudios — studio news, project updates and development notes.">
+<meta name="description" content="Новости и devlog NekoStudios — новости студии, обновления проектов и заметки о разработке.">
 <meta name="theme-color" content="#07090f">
-<title>News &amp; Devlog — NekoStudios</title>
+<title>Новости и devlog — NekoStudios</title>
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/layout.css">
@@ -27,40 +27,40 @@
 <script src="js/news.js" defer></script>
 </head>
 <body data-page="news">
-<a class="skip-link" href="#content">Skip to content</a>
+<a class="skip-link" href="#content" data-i18n="skip">Перейти к содержимому</a>
 
 <div data-site-header data-active="news" data-base="index.html"></div>
 
 <main id="content">
   <section class="page-hero" aria-labelledby="news-title">
     <div class="container">
-      <p class="eyebrow">Journal</p>
-      <h1 id="news-title">News &amp; Devlog</h1>
-      <p class="page-subtitle">Новости студии, обновления проектов и заметки о процессе разработки NekoStudios.</p>
-      <p class="page-support">Demonstration drafts are marked as such and are not official announcements.</p>
+      <p class="eyebrow" data-i18n="news_eyebrow">Журнал</p>
+      <h1 id="news-title" data-i18n="news_title">Новости и devlog</h1>
+      <p class="page-subtitle" data-i18n="news_subtitle">Новости студии, обновления проектов и заметки о процессе разработки NekoStudios.</p>
+      <p class="page-support" data-i18n="news_support">Черновики-демонстрации помечены как таковые и не являются официальными анонсами.</p>
     </div>
   </section>
 
-  <section class="section catalog" id="news-section" aria-label="Publications">
+  <section class="section catalog" id="news-section" aria-label="Publications" data-i18n-aria="news_section_label">
     <div class="container">
       <div class="news-intro">
-        <div class="filter-bar" id="news-filters" role="group" aria-label="Filter publications">
-          <button type="button" class="filter-btn is-active" data-category="all" aria-pressed="true">All News</button>
-          <button type="button" class="filter-btn" data-category="studio" aria-pressed="false">Studio News</button>
-          <button type="button" class="filter-btn" data-category="games" aria-pressed="false">Game Updates</button>
-          <button type="button" class="filter-btn" data-category="software" aria-pressed="false">Software</button>
-          <button type="button" class="filter-btn" data-category="devlog" aria-pressed="false">Devlog</button>
+        <div class="filter-bar" id="news-filters" role="group" aria-label="Filter publications" data-i18n-aria="filter_news_label">
+          <button type="button" class="filter-btn is-active" data-category="all" aria-pressed="true" data-i18n="news_filter_all">Все новости</button>
+          <button type="button" class="filter-btn" data-category="studio" aria-pressed="false" data-i18n="news_filter_studio">Новости студии</button>
+          <button type="button" class="filter-btn" data-category="games" aria-pressed="false" data-i18n="news_filter_games">Обновления игр</button>
+          <button type="button" class="filter-btn" data-category="software" aria-pressed="false" data-i18n="news_filter_software">Софт</button>
+          <button type="button" class="filter-btn" data-category="devlog" aria-pressed="false" data-i18n="news_filter_devlog">Devlog</button>
         </div>
         <label class="search-field">
-          <span class="sr-only">Search publications</span>
-          <input id="news-search" type="search" placeholder="Search publications" autocomplete="off">
+          <span class="sr-only" data-i18n="news_search">Поиск публикаций</span>
+          <input id="news-search" type="search" placeholder="Поиск публикаций" autocomplete="off" data-i18n-placeholder="news_search">
         </label>
       </div>
 
       <div id="news-featured" class="news-featured"></div>
       <div id="news-grid" class="news-grid"></div>
       <div id="news-empty" class="empty-state" hidden></div>
-      <noscript><p class="notice">Enable JavaScript to view publications.</p></noscript>
+      <noscript><p class="notice" data-i18n="news_js_notice">Включите JavaScript, чтобы увидеть публикации.</p></noscript>
     </div>
   </section>
 </main>

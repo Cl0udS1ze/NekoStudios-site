@@ -13,7 +13,7 @@
   function tr(k) { return i18n ? i18n.t(k) : k; }
 
   auth.refresh().then(function (user) {
-    if (!user) { mount.innerHTML = ui.notFound('Not logged in', 'Log in to manage Neko ID.', 'login.html', 'Log in'); return; }
+    if (!user) { mount.innerHTML = ui.notFound(tr('not_logged_in'), tr('login_to_view'), 'login.html', tr('login')); return; }
     mount.innerHTML = ui.loading();
     account.getProfile().then(function (payload) {
       var p = payload.profile;
@@ -21,12 +21,12 @@
         '<div id="settings-msg" class="settings-msg"></div><div class="settings-grid">' +
         '<div class="settings-card"><h2>' + tr('profile') + '</h2>' +
           '<form id="profile-form" class="auth-form">' +
-            '<label class="settings-label">Username<input id="s-username" value="' + esc(p.username) + '"></label>' +
-            '<label class="settings-label">Display name<input id="s-display" value="' + esc(p.display_name || '') + '"></label>' +
-            '<label class="settings-label">Bio<textarea id="s-bio">' + esc(p.bio || '') + '</textarea></label>' +
-            '<div class="settings-value">Neko ID: ' + esc(p.uuid) + '</div>' +
-            '<div class="settings-value">Registered: ' + esc(p.created_at) + '</div>' +
-            '<div class="settings-value">Role: ' + esc(p.role) + '</div>' +
+            '<label class="settings-label">' + tr('username') + '<input id="s-username" value="' + esc(p.username) + '"></label>' +
+            '<label class="settings-label">' + tr('display_name') + '<input id="s-display" value="' + esc(p.display_name || '') + '"></label>' +
+            '<label class="settings-label">' + tr('bio') + '<textarea id="s-bio">' + esc(p.bio || '') + '</textarea></label>' +
+            '<div class="settings-value">' + tr('neko_id') + ': ' + esc(p.uuid) + '</div>' +
+            '<div class="settings-value">' + tr('registered') + ': ' + esc(p.created_at) + '</div>' +
+            '<div class="settings-value">' + tr('role') + ': ' + esc(p.role) + '</div>' +
             '<button class="btn btn--primary" id="profile-save" type="submit">' + tr('save') + '</button>' +
           '</form></div>' +
         '<div class="settings-card"><h2>' + tr('interface') + '</h2>' +

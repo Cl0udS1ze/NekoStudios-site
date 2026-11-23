@@ -21,20 +21,22 @@ NekoStudios/
 │   ├── projects.css        Catalog, search and detail page styles
 │   └── news.css            News list and article styles
 ├── js/
-│   ├── site.js             Shared header/footer for all pages
+│   ├── site.js             Shared two-row header + footer for all pages
+│   ├── i18n.js             Global RU/EN dictionary, storage and live switching
 │   ├── config.js           Data mode + API base URL (no secrets)
 │   ├── api.js              Single fetch wrapper with error handling
 │   ├── repository.js       Data layer: projects, news, versions
 │   ├── data.js             Local project + status data
 │   ├── ui.js               Shared loading / error / empty / not-found panels
 │   ├── components.js       Reusable markup (project card, status badge)
-│   ├── main.js             Home page wiring (menu, nav state, filters)
+│   ├── main.js             Home page wiring (featured project, menu, filters)
 │   ├── projects.js         Catalog filtering and search
 │   ├── project.js          Detail page rendering by project id
 │   ├── news-data.js        Central news publications (drafts/demo only)
 │   ├── news-components.js  News cards and safe article body renderer
 │   ├── news.js             News filtering and search
-│   └── article.js          Article rendering by slug
+│   ├── article.js          Article rendering by slug
+│   └── team.js             Public roster from /api/team
 └── README.md
 ```
 
@@ -49,6 +51,17 @@ python3 -m http.server 8000
 ```
 
 No build step, dependencies, backend or database connection on this stage.
+
+## Language and navigation
+
+- Russian is the default language. The RU/EN switch in the header (and footer)
+  stores the choice in `localStorage` under `neko_lang`; no account is needed.
+- Static text uses `data-i18n` / `data-i18n-placeholder` / `data-i18n-aria`.
+  Dynamic views subscribe with `NekoI18n.onChange()` and re-render on switch.
+- The header has two rows: brand + main links, then Team / Devlog + RU/EN.
+  On small screens the main links fold into the menu button.
+- Content fields come from the API unchanged; known labels, project copy and
+  dates are localized in `js/i18n.js` without inventing new claims.
 
 ## Switching to the future API
 
